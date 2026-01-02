@@ -1,0 +1,428 @@
+A single HTML file game. Make it mobile friendly with easily readable text and with a simple charming UI.
+
+Title:
+Bob's room
+
+In a simple message box on the top left corner this text is shown:
+"Bob is an organized person who likes simplicity."
+
+Under it in another simple message quest box shown with a bit larger text size:
+"How can you improve Bob's room?"
+
+This is not part of the UI, just description of the room:
+The room contains a bed, a pillow, a wringkled blanket on the bed, a window with an old curtain with a hole on it, an empty table on the left side with a backpack leaning against it and some rubbish papers on the floor.
+
+The view is from a sideway camera angle, looking directly at the bed and above that the window.
+
+
+
+
+Options:
+    1. Clean up the trash papers from the floor.
+    2. Fold the blanket.
+    3. Replace the curtain with a new one.
+    4. Close the curtain.
+    5. Open the window.
+    6. Add another table.
+    7. Add flowers under the window.
+    8. Add a spine friendly mattress.
+    9. Move the bed to the corner.
+    10. Rotate the bed.
+    11. Flip the pillow.
+    12. Wash the bedding.
+    13. Give up.
+    14. Put the backpack on the table.
+    15. Sweep the floor.
+    16. I'm done.
+
+The options are visible on the right side of the screen in a list.
+Each option is under each other in ascending order.
+
+
+Mechanic:
+When an option is selected a dialog pop up becomes visible, which displays the dialog text and "Yes", "No" buttons.
+
+Dialog content for each option:
+1.
+    Do you think the wringked papers on the floor are trash?
+    Do you think Bob thinks of them the same?
+
+    Should we proceed clean it up?
+        Yes
+            If the papers on the ground would really be trash, that would mean Bob's room is not organized because it has trash on the ground.
+            In short, Bob is not organized if his room has trash around.
+            Do you agree?
+                Yes
+                    But we do know for a fact that Bob is organized, right?
+                    In that case we can conclude that the papers on the ground are in fact no trash.
+                    It must be, because otherwise, the room is not organized, thereby Bob also. Which can not be.
+                    So, we already know that it has a purpose being there, so who knows it could be important.
+                    
+                    What do you think? Would you still throw it away despite we know it is there on purpose?
+                        Yes
+                            Keep it mind, we are here to improve the room, and we are about to throw something away that we know are meant to be there.
+
+                            Would throwing this away would be a real improvement?
+                                Yes
+                                    The papers are gone.
+                                    1 point
+                                No
+                                    Nothing happens the pop up closes.
+                        No
+                            Nothing happens the pop up closes.
+                No
+                    Are you saying Bob is organized when his room is not? - Weird.
+                    Yes
+                        Nothing happens the pop up closes.
+            
+            That means the papers are there for a reason.
+        No
+            Nothing happens the pop up closes.
+
+2.
+    Do you think Bob left the blanket unfolded out of carelessness?
+        Yes
+            But we do know that Bob is organized, right?
+            Why would he leave the blanket unfolded then?
+            This doesn't make any sense...
+            Unless... it's on purpose!
+            Okay, so - Bob left the blanket there as it is for a reason.
+
+            Should we proceed folding it anyway?
+                Yes
+                    The wrinked blanked it replaced with a folded one.
+                    1 point
+                No
+                    Nothing happens the pop up closes.
+        No
+            Then why would you fold it?
+
+            Should we leave it as it is?
+            Yes
+                Nothing happens the pop up closes.
+            No
+                So... we are folding it for no reason?
+
+                Should we fold it anyway?
+                Yes
+                    The wrinked blanked it replaced with a folded one.
+                    1 point
+                No
+                    Nothing happens the pop up closes.
+
+3.
+    It's weird that Bob left such an old holey curtain hanging there, isn't it?
+
+    Do you think that's something worth giving a thought to?  
+        Yes
+            Alright.
+            Let's get the cogs started!
+
+            Why would Bob do that?
+            Why would Bob leave such an old holy curtain hanging right there?
+
+            Do you think he had a plan with it?
+            Do you think he is already in the process of replacing it with a new one himself?
+            Do you think the curtain has some short of sentimental value to him?
+
+            Should we proceed replacing the old curtain despite our newly gained doubts?
+                Yes
+                    The old holy curtain is replaced with a new one.
+                    1 point
+                No
+                    Nothing happens the pop up closes.
+        No
+            Agreed.
+            Why should we waste time with such nonsense anyway?
+            We are the authority here after all.
+
+            Should we proceed replacing that old joke of a curtain with a new stylish one?
+            Bob is certainly will be grateful for that, right?
+                Yes
+                    The old holy curtain is replaced with a new one.
+                    1 point
+                No
+                    Nothing happens the pop up closes.
+
+4.
+    Why would he leave the curain open on such a day?
+    The sun is burning hot, right?
+    This is fairly obvious that we have to open the curtain, right?
+
+    Should we close the curtain?
+        Yes
+            The curtain is closed.
+            1 point
+        No
+            What do you mean no?
+            Why not?
+
+            Is there something we should consider?
+                Yes
+                    Like what?
+                    What reason Bob could have in his mind that made him think that the curtain is ment to be closed today?!?
+
+                    Let's sit back a little and gather what we know before we force the issue.
+
+                    All we know right now is that Bob is organized, right?
+                    That might leave us with a hint that he might just have left the curtain closed for a reason, right?
+
+                    Should we take a risk and close the curtain despite that we don't know why it is closed?
+                        Yes
+                            The curtain is closed.
+                            1 point
+                        No
+                            Nothing happens the pop up closes.
+                No
+                    Then let's just close the curtain already!
+                        Yes
+                            The curtain is closed.
+                            1 point
+                        No
+                            Nothing happens the pop up closes.
+
+5.
+    Weird.
+    The window is closed.
+    Why would he leave the window closed on such a beautiful day?
+
+    Should we just open it?
+    That sounds like an improvement to me.
+        Yes
+            Highlights the text: "to me" for 2 seconds.
+            The window opens.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+6.
+    This room feels quite empty to me.
+
+    Why don't we just add another table?
+    I'm sure Bob would appreciate that.
+
+    Should we add a new table to room?
+        Yes
+            Highlights the text: "to me" for 2 seconds.
+            Add another table to the room.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+7.
+    The flowers?
+    Yes - the flowers are indeed missing from under the window!
+
+    Bob should know better, right?
+        Yes
+            Yes, he really should have known what belongs under the window!
+
+            Add flower under the window.
+            1 point
+        No
+            No?
+            Then what should we do then?
+            Add the flowers anyway?
+                Yes
+                    A flower vase added under the window.
+                    1 point
+                No
+                    Nothing happens the pop up closes.
+
+8.
+    Look at his mattress!
+    It's way too soft for a decent human to lay on, right?
+
+    Should we replace his mattress with a better, spine friendly one?
+        Yes
+            The mattress is replaced.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+9.
+    That bed over there.
+    Yes, that one.
+    That is surely out of place where it is now.
+    Moving it to the corner is much more convenient due to less air flow impact, and it is comfortable to sleep there.
+
+    Shall we move his bed to the corner?
+        Yes
+            The bed is moved to the corner.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+10.
+    His bed.
+    It is easy to see that his bed is facing the wrong direction.
+    I'm sure he did not mean to have his bed facing that side.
+
+    Should we rotate his bed into to correct direction for him?
+        Yes
+            Rotate the bed.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+11.
+    It might seem like a minor improvement at first, but in fact occasional pillow flipping
+    improves sleep quality by having the dirty side facing downwards.
+    I'm quite sure he does not know this.
+    Why would he?
+    Let's not waste time and help min out.
+
+    Should we flip his pillow?
+        Yes
+            Flip the pillow.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+12.
+    From here, it looks as if his bedding were not been washed lately.
+    There is no time to waste, he could be back at any moment.
+    We have to make as much improvements as we can before that!
+    Let's make haste and remove the sheet cover.
+
+    Should we wash his bedding for him?
+        Yes
+            Remove the beddings.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+13.
+    Why are you so quick to give up?
+    There is plenly of things we can do instead of just givin up.
+    Come on now!
+
+    Shall we continue with the improvements instead?
+        Yes
+            Nothing happens the pop up closes.
+        No
+            What?
+            But look at his room it's a mess!
+            He cleary needs our help!
+            
+            Let's try a couple things before we just give up, okay?
+                Yes
+                    Nothing happens the pop up closes.
+                No
+                    Alright, alright.
+                    If you insist, I won't and can't hold you back.
+                    But... I will ask you one more time just to be sure.
+
+                    Are you sure you are giving up right here and now?
+                        Yes
+                            Proceed to "evaluation"
+                        No
+                            Nothing happens the pop up closes.
+
+14.
+    Look like he forgot to put his backpack on the table.
+    I know that many people would rather prefer keeping their bags on the table rather than next to it.
+    He might not be as organized as he claims he is?
+
+    Should we put the backpack on the table?
+        Yes
+            Move the backpack to the table.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+15.
+    A little sweeping here and there can not hurty anybody, right?
+    Let's do this!
+    Let's sweep his floor!
+
+    Should we sweep his floor?
+        Yes
+            Swipe the floor.
+            1 point
+        No
+            Nothing happens the pop up closes.
+
+16.
+    Only visible when the score is not 0.
+
+    Are you certainly done with the improvements?
+    We might can do more for him, no?
+    Are you sure?
+        Yes
+            Proceed to "evaluation"
+        No
+            Nothing happens the pop up closes.
+
+Evaluation:
+    The answer depens on the score.
+    Score 0:
+        Congratulations! \(^.^)/
+        You have recognized that Bob's room is already as improved as it can get and the only person who can actually improve it further is Bob himself and not us or anyone else!
+        You might think we have lost, but no - we have recognized our position here and we did made the right call!
+
+        ---Bob is proud of you!---
+        Restart?
+            Yes
+    Score 1:
+        Congratulations!
+        You have only made Bob's room slightly worse! (._.)
+        You might ponder now... why is that?
+        The only thing I atually did was wrong?
+        Let's restart and figure this out!
+
+        Bob would be slightly angry with you.
+        ---Bob will restore the room to it's original organized state.---
+        Restart?
+            Yes
+    Score 2:
+        Congratulations!
+        You have made Bob's room moderatelly worse! (O_O')
+        You might ponder now... why is that?
+        Wasn't Bob happy with our choose of improvements?
+        Did we improve the wrong things?
+        Let's restart and figure this out!
+
+        Bob would be real angry with you, and likely not leave you unsupervived in the room next time.
+        ---Bob might be able to restore the room to it's original organized state.---
+        Restart?
+            Yes
+    Score 3 or more:
+        Congratulations!
+        You have made Bob's room significantly worse! (x_x)
+        You likely not understand why is that.
+        Perhaps try improving fewer things at a time?
+        Let's restart and figure this out!
+
+        ---Bob would be real angry with you, and would not invite you to his room ever again.---
+        Restart?
+            Yes
+
+
+Assets:
+    SVGs (low poly, keep it simple and minimal just enough to let the user see what it is):
+        Blanket
+            folded
+            unfolded
+        Bed
+        Wrinked paper
+        Table
+        Backpack
+            leaned againt table
+            on the table
+        Window
+            open
+            closed
+        Curtain (old and new)
+            open
+            closed
+        Mattress
+            normal
+            spine friendly
+        Pillow
+            normal
+            flipped
+
+    A chill charming background music. (Perhaps linked via url to keep the html a single file?)
+
+On the bottom left corner, show the current improvement counter, like "1 improvement".

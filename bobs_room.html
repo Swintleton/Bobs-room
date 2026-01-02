@@ -1,0 +1,2011 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Bob's room</title>
+  <style>
+    :root{
+      --bg:#f4f5f7;
+      --panel:#ffffff;
+      --panel2:#f8fafc;
+      --text:#0f172a;
+      --muted:#475569;
+      --accent:#7c3aed;
+      --accent2:#16a34a;
+      --danger:#ef4444;
+      --shadow: 0 14px 40px rgba(15,23,42,.12);
+      --radius:18px;
+      --border: rgba(15,23,42,.10);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 700px at 18% 0%, rgba(124,58,237,.14) 0%, rgba(124,58,237,0) 55%),
+        radial-gradient(900px 600px at 95% 15%, rgba(34,197,94,.12) 0%, rgba(34,197,94,0) 60%),
+        linear-gradient(180deg, #f7f8fb 0%, var(--bg) 55%, #eef0f4 100%);
+      color:var(--text);
+      overflow-x:hidden;
+      font-size: 16px;
+    }
+    .app{
+      height:100vh;
+      min-height:100%;
+      padding: clamp(10px, 2.2vw, 18px);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    header{
+      flex:0 0 auto;
+      display:flex;
+      gap:12px;
+      align-items:stretch;
+      flex-wrap:wrap;
+      margin-top: -16px;
+    }
+    .titlebar{
+      position: relative;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      width:100%;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .titlebar h1{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      text-align: center;
+    }
+    /* Keep the music pill pinned to the right */
+    .titlebar .pillrow{
+      margin-left: auto;
+    }
+    .title{
+      font-weight: 800;
+      letter-spacing: .2px;
+      color:#993333;
+    }
+
+    .bob .b1{ color: #f97316; } /* warm orange */
+    .bob .o { color: #22c55e; } /* friendly green */
+    .bob .b2{ color: #3b82f6; } /* soft blue */
+
+    .title .apos{ color: rgba(15,23,42,.55); }
+
+    h1{
+      margin:0;
+      font-weight:900;
+      font-size: clamp(20px, 3vw, 34px);
+      letter-spacing:.2px;
+    }
+    .pillrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .pill{
+      background: rgba(255,255,255,.7);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 999px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      box-shadow: 0 10px 25px rgba(15,23,42,.08);
+      backdrop-filter: blur(10px);
+    }
+    .pill button{
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(15,23,42,.03);
+      color:var(--text);
+      border-radius:999px;
+      padding: 6px 10px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .pill button:active{transform: translateY(1px)}
+    .pill small{color:var(--muted); font-weight:700; font-size: 16px;}
+
+    .msgcol{
+      display:flex;
+      min-height:0;
+      flex-direction:column;
+      gap:10px;
+      flex:1 1 420px;
+      min-width: 280px;
+      max-width: 720px;
+    }
+    .box{
+      background: linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.72));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+    }
+    .box.small{
+      font-size: clamp(16px, 1.7vw, 18px);
+      font-weight: 950;
+    }
+    .box.big{
+      font-size: clamp(17px, 2.2vw, 20px);
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+
+    .main{
+      display:flex;
+      gap:12px;
+      flex:1 1 auto;
+      align-items:stretch;
+      min-height: 420px;
+    }
+    .sceneWrap{
+      flex: 1 1 68%;
+      min-height:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 10px;
+      position:relative;
+      overflow:hidden;
+      min-height: 330px;
+    }
+    .options{
+      flex: 0 0 340px;
+      min-height:0;
+      max-width: 380px;
+      min-width: 280px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .optHeader{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(15,23,42,.03);
+      border: 1px solid rgba(15,23,42,.08);
+    }
+    .optHeader strong{font-size:16px}
+    .optHeader span{color:var(--muted); font-weight:800; font-size:16px}
+    .optList{
+      overflow:auto;
+      padding: 4px;
+      margin:0;
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      scrollbar-width: thin;
+      flex:1 1 auto;
+      min-height:0;
+}
+
+    .optBtn{
+      width:100%;
+      text-align:left;
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(15,23,42,.02);
+      color:var(--text);
+      padding: 10px 10px;
+      border-radius: 14px;
+      cursor:pointer;
+      line-height:1.2;
+      font-weight: 850;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .optBtn:hover{background: rgba(15,23,42,.04)}
+    .optBtn:active{transform: translateY(1px)}
+    .badge{
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      font-weight: 950;
+      background: rgba(124,58,237,.12);
+      border: 1px solid rgba(124,58,237,.35);
+      color: #4c1d95;
+    }
+    .optText{flex:1 1 auto; padding-top: 2px; font-size: 16px;}
+    .footer{
+      position:absolute;
+      left: 10px;
+      bottom: 10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      pointer-events:none;
+    }
+    .counter{
+      pointer-events:auto;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(15,23,42,.10);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-weight: 950;
+      box-shadow: 0 10px 25px rgba(15,23,42,.10);
+    }
+
+    /* Modal */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(15,23,42,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index:50;
+    }
+    .overlay.show{display:flex}
+    .modal{
+      width:min(780px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+      border: 1px solid rgba(15,23,42,.12);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: 0 25px 80px rgba(15,23,42,.35);
+      overflow:hidden;
+    }
+    .modalTop{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 14px;
+      background: rgba(15,23,42,.03);
+      border-bottom: 1px solid rgba(15,23,42,.10);
+    }
+    .modalTop strong{font-size:16px}
+    .modalTop button{
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(15,23,42,.03);
+      color:var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight: 950;
+    }
+    .modalBody{ padding: 14px; }
+    .dialogText{
+      white-space: pre-wrap;
+      line-height: 1.28;
+      font-size: clamp(16px, 2.05vw, 18px);
+      font-weight: 780;
+      color: var(--text);
+    }
+    /* Invisible until we add .hl-on */
+    .dialogText .hl-target{
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    /* Only becomes “highlighted” during the 2s window */
+    .dialogText .hl-target.hl-on{
+      font-size: 115%;
+      padding: 0 .25em;
+      border-radius: .35em;
+      box-shadow: 0 0 0 2px rgba(22,163,74,0.6) inset;
+      background: rgba(22,163,74,0.2);
+    }
+    @keyframes pulse{
+      from{filter:brightness(1)}
+      to{filter:brightness(1.15)}
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      padding: 12px 14px 14px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(15,23,42,.03);
+      color:var(--text);
+      padding: 10px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 950;
+      min-width: 110px;
+      text-align:center;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(15,23,42,.05)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: rgba(22,163,74,.12);
+      border-color: rgba(22,163,74,.35);
+    }
+    .btn.danger{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.35);
+    }
+
+    /* Used / disabled options */
+    .optBtn.used,
+    .optBtn:disabled{
+      opacity: .45;
+      filter: grayscale(1);
+      cursor: not-allowed;
+      transform: none;                 /* avoid "pressed" feel */
+    }
+
+    /* Prevent hover styling from making it look active */
+    .optBtn.used:hover,
+    .optBtn:disabled:hover{
+      background: rgba(15,23,42,.02);
+    }
+
+    /* Optional: gray out the badge too */
+    .optBtn.used .badge,
+    .optBtn:disabled .badge{
+      background: rgba(15,23,42,.08);
+      border-color: rgba(15,23,42,.18);
+      color: rgba(15,23,42,.55);
+    }
+
+    /* Scene */
+    #scene{
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius: calc(var(--radius) - 6px);
+      background: radial-gradient(900px 380px at 30% 10%, rgba(255,255,255,.6) 0%, rgba(255,255,255,.1) 45%, rgba(0,0,0,0) 70%);
+    }
+    .hidden{display:none}
+
+    .aboutText{
+      font-size:16px;
+      line-height:1.5;
+    }
+    .aboutText p{ margin:.35em 0; }
+    .aboutText a{
+      text-decoration: underline;
+      font-weight: 800;
+    }
+
+    @media (max-width: 860px){
+      .app{padding: 10px;}
+      header{gap:10px;}
+      .box{padding: 10px 12px;}
+      .box.small{font-size: 16px;}
+      .box.big{font-size: 17px;}
+      .main{flex-direction:column; gap:10px; min-height:0;}
+      .sceneWrap{
+        height: 44vh;
+        min-height: 220px;
+      }
+      .options{
+        max-width:none;
+        flex: 1 1 auto;
+        min-height:0;
+      }
+      .titlebar h1 {
+        left: 12%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="titlebar">
+      <h1 class="title">
+        <span class="bob"><span class="b1">B</span><span class="o">o</span><span class="b2">b</span></span><span class="apos">'s</span> room
+      </h1>
+      <div class="pillrow">
+        <div class="pill" aria-label="Controls">
+          <small>Music</small>
+          <button id="musicBtn" type="button" aria-pressed="false">Off</button>
+          <button id="aboutBtn" type="button">About</button>
+        </div>
+      </div>
+    </div>
+
+    <header>
+      <div class="msgcol">
+        <div class="box small">Bob is an organized person who likes simplicity.</div>
+        <div class="box big">How can you improve Bob's room?</div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="sceneWrap">
+        <svg id="scene" viewBox="0 0 1024 450" role="img" aria-label="Bob's room scene">
+      
+          <defs>
+            <!-- Light interior -->
+            <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" />
+              <stop offset="1" stop-color="#e9edf2" />
+            </linearGradient>
+      
+            <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#d9b891" />
+              <stop offset="1" stop-color="#b9875d" />
+            </linearGradient>
+      
+            <linearGradient id="woodEdge" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#b9855a" />
+              <stop offset="1" stop-color="#8b5a3c" />
+            </linearGradient>
+          </defs>
+      
+          <!-- Room shell -->
+          <rect x="0" y="0" width="1024" height="320" fill="url(#wall)" />
+          <rect x="0" y="300" width="1024" height="150" fill="url(#floor)" />
+          <path d="M0,300 L1024,300" stroke="rgba(15,23,42,.12)" stroke-width="2" />
+      
+          <!-- Subtle floor boards -->
+          <g opacity=".18">
+            <path d="M40 300 L0 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M140 300 L90 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M240 300 L190 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M340 300 L300 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M440 300 L420 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M540 300 L540 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M640 300 L660 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M740 300 L780 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M840 300 L900 450" stroke="#7a4f34" stroke-width="2" />
+            <path d="M940 300 L1024 450" stroke="#7a4f34" stroke-width="2" />
+          </g>
+
+          <!-- Dust (sweep – wide scatter + some rotation) -->
+          <g id="dust" transform="translate(20 300)" opacity="0.5">
+
+            <!-- left -->
+            <polygon points="20,34 38,24 54,34 34,44" fill="#cbd5e1"/>
+            <g transform="translate(110 40) rotate(-18) scale(1 .95)">
+              <polygon points="0,16 16,6 30,16 14,26" fill="#e2e8f0"/>
+            </g>
+
+            <!-- left-mid -->
+            <g transform="translate(190 88) rotate(12) scale(.95 1)">
+              <polygon points="0,18 20,8 38,18 18,30" fill="#b9c5d3"/>
+            </g>
+            <polygon points="260,58 278,50 294,58 276,66" fill="#cbd5e1"/>
+
+            <!-- center -->
+            <g transform="translate(380 78) rotate(-10)">
+              <polygon points="0,20 20,10 40,20 18,34" fill="#e2e8f0"/>
+            </g>
+            <polygon points="460,54 478,46 494,54 476,62" fill="#cbd5e1"/>
+
+            <!-- mid-right -->
+            <g transform="translate(560 110) rotate(16) scale(1 .9)">
+              <polygon points="0,18 22,8 44,18 22,32" fill="#b9c5d3"/>
+            </g>
+            <polygon points="650,72 670,64 688,72 666,82" fill="#e2e8f0"/>
+
+            <!-- right -->
+            <g transform="translate(760 115) rotate(-14)">
+              <polygon points="0,18 22,8 44,18 20,34" fill="#cbd5e1"/>
+            </g>
+            <polygon points="840,88 860,80 878,88 856,98" fill="#b9c5d3"/>
+
+            <!-- far right (near 1000) -->
+            <g transform="translate(920 62) rotate(9) scale(.95 1)">
+              <polygon points="0,16 18,8 36,16 18,26" fill="#e2e8f0"/>
+            </g>
+            <g transform="translate(970 126) rotate(-20) scale(1 .92)">
+              <polygon points="0,18 22,10 42,18 20,32" fill="#cbd5e1"/>
+            </g>
+
+          </g>
+
+          <!-- Window -->
+          <g id="windowGroup" transform="translate(475 42)">
+
+            <!-- Outer frame -->
+            <polygon points="0,0 230,0 230,150 0,150"
+                    fill="#ffffff" stroke="rgba(15,23,42,.18)" stroke-width="2.5"/>
+
+            <!-- Single inner glass (fills the frame evenly; no levitation) -->
+            <polygon id="windowGlass"
+                    points="9,8 222,8 222,141 9,141"
+                    fill="rgba(56,189,248,.18)"
+                    stroke="rgba(15,23,42,.16)" stroke-width="2"/>
+
+            <!-- Outside: sky + distant trees (aligned to the new glass bounds) -->
+            <g id="outsideSky">
+              <polygon points="10,10 220,10 220,74 10,74" fill="rgba(56,189,248,.22)"/>
+              <polygon points="10,74 220,74 220,140 10,140" fill="rgba(34,197,94,.12)"/>
+              <polygon points="10,122 72,92 122,130 170,104 220,124 220,140 10,140" fill="rgba(22,163,74,.18)"/>
+              <polygon points="34,118 54,92 78,120" fill="rgba(15,118,110,.22)"/>
+              <polygon points="126,124 148,92 170,126" fill="rgba(15,118,110,.22)"/>
+              <polygon points="188,126 204,98 220,128" fill="rgba(15,118,110,.22)"/>
+            </g>
+
+            <!-- Subtle glass highlight (optional but helps it feel “in” the frame) -->
+            <polygon points="140,10 220,10 220,60 165,74"
+                    fill="rgba(255,255,255,.10)"/>
+
+            <!-- Zipline anchor (still available) -->
+            <!-- Local: (220, 26)  Global: (695, 68) -->
+            <circle id="ziplineAnchor" cx="220" cy="26" r="3" fill="rgba(15,23,42,.35)"/>
+
+            <!-- Curtain rod -->
+            <path d="M0 8 L230 8" stroke="rgba(15,23,42,.22)" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="0" cy="8" r="5" fill="rgba(15,23,42,.22)"/>
+            <circle cx="230" cy="8" r="5" fill="rgba(15,23,42,.22)"/>
+
+            <!-- Curtains (unchanged) -->
+            <g id="curtainOldOpen">
+              <polygon points="172,8 230,8 230,154 190,154" fill="#fbbf24" stroke="#d97706" stroke-width="2"/>
+              <polygon points="175,22 230,28 230,154 191,154" fill="#fde68a"/>
+              <polygon points="206,88 216,82 224,92 216,102 208,98" fill="rgba(15,23,42,.22)" stroke="rgba(15,23,42,.12)" stroke-width="1"/>
+            </g>
+
+            <g id="curtainOldClosed" class="hidden">
+              <polygon points="0,8 230,8 230,154 0,154" fill="#fbbf24" stroke="#d97706" stroke-width="2"/>
+              <polygon points="0,10 50,22 102,10 158,24 230,10 230,154 0,154" fill="#fde68a"/>
+              <polygon points="106,84 124,76 134,90 124,104 110,100" fill="rgba(15,23,42,.22)" stroke="rgba(15,23,42,.12)" stroke-width="1"/>
+            </g>
+
+            <g id="curtainNewOpen" class="hidden">
+              <polygon points="172,8 230,8 230,154 190,154" fill="#818cf8" stroke="#4f46e5" stroke-width="2"/>
+              <polygon points="175,22 230,28 230,154 191,154" fill="#c7d2fe"/>
+              <path d="M194 22 L216 154" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+              <path d="M206 20 L226 154" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+            </g>
+
+            <g id="curtainNewClosed" class="hidden">
+              <polygon points="0,8 230,8 230,154 0,154" fill="#818cf8" stroke="#4f46e5" stroke-width="2"/>
+              <polygon points="0,10 50,22 102,10 158,24 230,10 230,154 0,154" fill="#c7d2fe"/>
+              <path d="M16 14 L42 154" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+              <path d="M62 14 L88 154" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+              <path d="M110 14 L136 154" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+              <path d="M158 14 L184 154" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+            </g>
+
+          </g>
+
+          <!-- Flowers (inside window, scaled & positioned) -->
+          <g id="flowers"
+            class="hidden"
+            transform="translate(545 105) scale(0.65)">
+
+            <!-- pot -->
+            <polygon points="28,92 102,92 92,132 38,132"
+                    fill="#C66A5A"
+                    stroke="rgba(15,23,42,.18)"
+                    stroke-width="2"/>
+
+            <!-- stems -->
+            <polygon points="44,92 62,48 68,52 52,92"
+                    fill="#22c55e"
+                    stroke="rgba(15,23,42,.16)"
+                    stroke-width="2"/>
+
+            <polygon points="70,92 92,52 98,56 78,92"
+                    fill="#16a34a"
+                    stroke="rgba(15,23,42,.16)"
+                    stroke-width="2"/>
+
+            <!-- blooms -->
+            <polygon points="62,50 78,38 90,52 76,64"
+                    fill="#fbbf24"
+                    stroke="rgba(15,23,42,.12)"
+                    stroke-width="2"/>
+
+            <polygon points="78,38 104,40 110,58 90,52"
+                    fill="#fb7185"
+                    stroke="rgba(15,23,42,.12)"
+                    stroke-width="2"/>
+
+            <polygon points="74,70 94,58 106,74 92,86"
+                    fill="#60a5fa"
+                    stroke="rgba(15,23,42,.12)"
+                    stroke-width="2"/>
+          </g>
+
+          <!-- Simple low-poly table (left-side room view) -->
+          <g id="table1" transform="translate(100 210) scale(1 1.2)">
+
+            <!-- Table top -->
+            <polygon
+              points="40,40 210,40 190,70 20,70"
+              fill="#c08b5a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+            <!-- Top highlight (RIGHT side) -->
+            <polygon
+              points="160,40 210,40 190,70 120,70"
+              fill="rgba(255,255,255,.12)"/>
+
+            <!-- Back left leg (slightly darker) -->
+            <polygon
+              points="42,70 56,70 54,140 44,140"
+              fill="#844d2f"/>
+
+            <!-- Back right leg (slightly darker) -->
+            <polygon
+              points="190,70 204,48 202,120 192,120"
+              fill="#844d2f"/>
+
+            <!-- Front left leg -->
+            <polygon
+              points="30,70 48,70 45,150 33,150"
+              fill="#9a5d3a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+            <!-- Front right leg -->
+            <polygon
+              points="165,70 183,70 180,150 168,150"
+              fill="#9a5d3a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+          </g>
+
+          <!-- Extra table (hidden until added) -->
+          <g id="table2" class="hidden" transform="translate(290 210) scale(1 1.2)">
+
+            <!-- Table top -->
+            <polygon
+              points="40,40 210,40 190,70 20,70"
+              fill="#c08b5a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+            <!-- Top highlight (RIGHT side) -->
+            <polygon
+              points="160,40 210,40 190,70 120,70"
+              fill="rgba(255,255,255,.12)"/>
+
+            <!-- Back left leg (slightly darker) -->
+            <polygon
+              points="42,70 56,70 54,140 44,140"
+              fill="#844d2f"/>
+
+            <!-- Back right leg (slightly darker) -->
+            <polygon
+              points="190,70 204,48 202,120 192,120"
+              fill="#844d2f"/>
+
+            <!-- Front left leg -->
+            <polygon
+              points="30,70 48,70 45,150 33,150"
+              fill="#9a5d3a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+            <!-- Front right leg -->
+            <polygon
+              points="165,70 183,70 180,150 168,150"
+              fill="#9a5d3a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+          </g>
+
+          <!-- Backpack (leaning / against table) -->
+          <g id="backpackLean" transform="translate(80 316) scale(0.75)">
+
+            <!-- main body -->
+            <polygon points="20,12 56,0 92,12 104,46 90,104 26,104 10,46"
+                    fill="#bb4442" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+
+            <!-- side gusset (depth) -->
+            <polygon points="92,12 104,46 90,104 80,104 90,48 82,16"
+                    fill="#ee4442" stroke="rgba(15,23,42,.12)" stroke-width="1.5"/>
+
+            <!-- top flap -->
+            <polygon points="28,18 56,6 84,18 78,30 34,30"
+                    fill="#069906" stroke="rgba(15,23,42,1)" stroke-width="1.5" opacity="0.35"/>
+
+            <!-- front pocket -->
+            <polygon points="30,58 78,58 84,74 74,98 34,98 24,74"
+                    fill="#005500" stroke="rgba(15,23,42,1)" stroke-width="1.5" opacity="0.35"/>
+
+            <!-- zipper line -->
+            <path d="M30 58 L78 58"
+                  stroke="rgba(15,23,42,.5)" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- handle -->
+            <path d="M48 14 C52 8, 60 8, 64 14"
+                  stroke="rgba(15,23,180,1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+          </g>
+          <!-- Backpack (on table) -->
+          <g id="backpackOnTable" class="hidden" transform="translate(215 225) scale(0.75)">
+
+            <!-- main body -->
+            <polygon points="14,10 42,0 76,10 88,34 78,74 22,74 6,34"
+                    fill="#bb4442" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+
+            <!-- side gusset (depth) -->
+            <polygon points="76,10 88,34 78,74 70,74 78,36 70,14"
+                    fill="#ee4442" stroke="rgba(15,23,42,.12)" stroke-width="1.5"/>
+
+            <!-- top flap -->
+            <polygon points="18,14 42,6 72,14 66,24 24,24"
+                    fill="#069906" stroke="rgba(15,23,42,1)" stroke-width="1.5" opacity="0.35"/>
+
+            <!-- front pocket -->
+            <polygon points="22,40 66,40 72,54 64,70 26,70 18,54"
+                    fill="#005500" stroke="rgba(15,23,42,1)" stroke-width="1.5" opacity="0.35"/>
+
+            <!-- zipper line -->
+            <path d="M22 40 L66 40"
+                  stroke="rgba(15,23,42,.5)" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- handle -->
+            <path d="M38 12 C42 7, 50 7, 54 12"
+                  stroke="rgba(15,23,180,1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- Papers on floor -->
+          <g id="papers" transform="translate(230 360)">
+            <polygon points="0,30 55,0 55,18 34,48" fill="#ffffff" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+            <path d="M8 30 L55 5" stroke="rgba(15,23,42,.16)" stroke-width="2" />
+            <path d="M17 34 L55 8" stroke="rgba(15,23,42,.12)" stroke-width="2" />
+            <path d="M25 40 L55 10" stroke="rgba(15,23,42,.12)" stroke-width="2" />
+            <polygon points="92,18 126,6 158,30 118,50" fill="#f8fafc" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+            <path d="M98 20 L128 10" stroke="rgba(15,23,42,.14)" stroke-width="2" />
+            <path d="M102 25 L134 14" stroke="rgba(15,23,42,.14)" stroke-width="2" />
+            <path d="M105 30 L138 18" stroke="rgba(15,23,42,.14)" stroke-width="2" />
+            <path d="M109 35 L120 31" stroke="rgba(15,23,42,.14)" stroke-width="2" />
+            <polygon points="30,58 74,40 116,62 64,82" fill="#f8fafc" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+            <path d="M40 60 L76 45" stroke="rgba(15,23,42,.12)" stroke-width="2" />
+            <path d="M46 63 L82 48" stroke="rgba(15,23,42,.12)" stroke-width="2" />
+          </g>
+
+          <!-- Bed group -->
+          <g id="bedRig" transform="translate(400 240)">
+
+            <!-- Legs (table-style: inset, narrow, back legs darker/shorter) -->
+            <!-- back-left -->
+            <polygon points="-4,81 10,81 8,131 -2,131" fill="#844d2f"/>
+
+            <!-- back-right-->
+            <polygon points="216,81 230,81 228,131 218,131" fill="#844d2f"/>
+
+            <!-- front-left -->
+            <polygon points="28,112 46,112 44,172 30,172"
+                    fill="#9a5d3a"
+                    stroke="rgba(15,23,42,.18)"
+                    stroke-width="2"/>
+
+            <!-- front-right -->
+            <polygon points="248,112 266,112 264,172 250,172"
+                    fill="#9a5d3a"
+                    stroke="rgba(15,23,42,.18)"
+                    stroke-width="2"/>
+
+            <!-- Frame (wood) -->
+            <polygon points="-14,68 242,68 278,112 22,112"
+              fill="#c08b5a"
+              stroke="rgba(15,23,42,.18)"
+              stroke-width="2"/>
+
+            <!-- Headboard (wood) -->
+            <g id="headboard3d">
+              <!-- top face -->
+              <polygon points="-17,56 -9,56 22,96 7,96"
+                      fill="#c08b5a" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+
+              <!-- front face -->
+              <polygon points="10,96 22,96 22,114 9,114"
+                      fill="#b9855a" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+
+              <!-- side face (left) -->
+              <polygon points="-17,56 -17,74 10,114 10,96"
+                      fill="#8b5a3c" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+            </g>
+
+            <!-- Mattress -->
+            <g id="mattressNormal">
+              <polygon points="10,50 245,50 265,82 30,82" fill="#ffffff" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+              <polygon points="30,82 265,82 265,102 30,102" fill="#e2e8f0" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+              <polygon points="10,50 10,70 30,102 30,82" fill="#e2e8f0" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+            </g>
+
+            <g id="mattressSpine" class="hidden">
+              <polygon points="10,50 245,50 265,82 30,82" fill="#dcfce7" stroke="rgba(15,23,42,.18)" stroke-width="2"/>
+              <polygon points="30,82 265,82 265,102 30,102" fill="#bbf7d0" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+              <polygon points="10,50 10,70 30,102 30,82" fill="#bbf7d0" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+            </g>
+
+            <!-- Blanket -->
+            <g id="blanketUnfolded">
+              <polygon points="70,50 235,50 253,80 80,80" fill="#fda4af" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+            </g>
+
+            <g id="blanketFolded" class="hidden">
+              <polygon points="200,50 235,50 253,80 210,80" fill="#fda4af" stroke="rgba(15,23,42,.14)" stroke-width="2"/>
+            </g>
+
+            <!-- Pillow -->
+            <g id="pillowNormal">
+              <polygon points="15,38 63,38 75,58 25,58" fill="#ffffff" stroke="rgba(15,23,42,.16)" stroke-width="2"/>
+              <polygon points="25,58 75,58 73,72 29,72" fill="#e2e8f0" stroke="rgba(15,23,42,.12)" stroke-width="2"/>
+              <polygon points="15,38 15,53 27,72 29,72 29,58" fill="#e2e8f0" stroke="rgba(15,23,42,.12)" stroke-width="2"/>
+            </g>
+
+            <g id="pillowFlipped" class="hidden">
+              <polygon points="15,38 63,38 75,58 25,58" fill="#f8fafc" stroke="rgba(15,23,42,.16)" stroke-width="2"/>
+              <polygon points="25,58 75,58 73,72 29,72" fill="#e2e8f0" stroke="rgba(15,23,42,.12)" stroke-width="2"/>
+              <polygon points="15,38 15,53 27,72 29,72 29,58" fill="#e2e8f0" stroke="rgba(15,23,42,.12)" stroke-width="2"/>
+              <polygon points="22,43 60,43 66,53 28,53" fill="#ccc"/>
+            </g>
+
+          </g>
+
+        <div class="footer">
+          <div class="counter" id="counter">0 improvements</div>
+        </div>
+      </div>
+
+      <aside class="options" aria-label="Options list">
+<ul class="optList" id="optList"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Dialog -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modalTop">
+        <strong id="modalTitle">Mind</strong>
+        <button id="closeModal" type="button" aria-label="Close dialog">✕</button>
+      </div>
+      <div class="modalBody">
+        <div class="dialogText" id="dialogText"></div>
+      </div>
+      <div class="actions" id="dialogActions"></div>
+    </div>
+  </div>
+
+  <!-- Credits popup -->
+  <div class="overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal">
+      <div class="modalTop">
+        <strong id="aboutTitle">About</strong>
+        <button class="xbtn" id="closeAbout" type="button" aria-label="Close about">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="aboutText">
+          <p><strong>Creators:</strong> Swintleton</p>
+          <p><strong>GitHub:</strong>
+            <a href="https://github.com/Swintleton/Bobs-room" target="_blank" rel="noopener noreferrer">
+              github.com/Swintleton/Bobs-room
+            </a>
+          </p>
+          <p><strong>Email:</strong>
+            <a href="mailto:keragon2@gmail.com">keragon2@gmail.com</a>
+          </p>
+          <p><strong>Version:</strong>
+            1.0
+          </p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="aboutOk" type="button">OK</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ---------------------------
+   State + utilities
+----------------------------*/
+const state = {
+  score: 0,
+  // visuals / flags
+  papersRemoved: false,
+  blanketFolded: false,
+  curtainNew: false,
+
+  // Curtain is open by default; option 4 closes it once.
+  curtainClosed: false,
+  windowOpen: false,
+
+  extraTable: false,
+  flowersAdded: false,
+  mattressSpine: false,
+  bedCorner: false,
+  bedRotated: false,
+  pillowFlipped: false,
+  beddingRemoved: false,
+  backpackOnTable: false,
+  floorSwept: false,
+
+  // per-run option usage
+  usedOptions: {}, // { [optionId]: true }
+
+  // music
+  musicOn: false
+};
+
+const el = (id) => document.getElementById(id);
+
+function pluralize(n, one, many){
+  return n === 1 ? one : many;
+}
+
+function setCounter(){
+  el("counter").textContent = `${state.score} ${pluralize(state.score, "improvement", "improvements")}`;
+  renderOptions();
+}
+
+function safeHtmlFromTokenText(text){
+  const esc = (s) => s
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
+  let out = esc(text);
+  out = out
+    .replaceAll("\\n", "\n")
+    .replaceAll("[[H]]", `<span class="hl-target" data-hl="1">`)
+    .replaceAll("[[/H]]", `</span>`);
+  return out;
+}
+
+function awardPointOnce(optionId, flagName){
+  if (!state[flagName]){
+    state[flagName] = true;
+    state.score += 1;
+    markOptionUsed(optionId);
+    setCounter();
+    updateScene();
+    return true;
+  }
+  return false;
+}
+
+function markOptionUsed(optionId){
+  const opt = options.find(o => o.id === optionId);
+  if (!opt?.once) return;
+  state.usedOptions[optionId] = true;
+  renderOptions(); // so it grays out immediately
+}
+
+/* ---------------------------
+   Low-poly SVG toggles
+----------------------------*/
+function updateScene(){
+  // Papers
+  el("papers").classList.toggle("hidden", state.papersRemoved);
+
+  // Dust
+  el("dust").classList.toggle("hidden", state.floorSwept);
+
+  // Blanket
+  el("blanketUnfolded").classList.toggle("hidden", state.blanketFolded || state.beddingRemoved);
+  el("blanketFolded").classList.toggle("hidden", !state.blanketFolded || state.beddingRemoved);
+
+  // Mattress
+  el("mattressNormal").classList.toggle("hidden", state.mattressSpine);
+  el("mattressSpine").classList.toggle("hidden", !state.mattressSpine);
+
+  // Pillow
+  el("pillowNormal").classList.toggle("hidden", state.pillowFlipped || state.beddingRemoved);
+  el("pillowFlipped").classList.toggle("hidden", !state.pillowFlipped || state.beddingRemoved);
+
+  // Curtains: single curtain, open by default
+  const useNew = state.curtainNew;
+  const closed = state.curtainClosed;
+
+  const windowOpen = state.windowOpen;
+
+  // Old
+  el("curtainOldOpen").classList.toggle("hidden", useNew || closed);
+  el("curtainOldClosed").classList.toggle("hidden", useNew || !closed);
+
+  // New
+  el("curtainNewOpen").classList.toggle("hidden", !useNew || closed);
+  el("curtainNewClosed").classList.toggle("hidden", !useNew || !closed);
+
+  // Window open/closed glass shape
+  const glass = el("windowGlass");
+  if (glass){
+    glass.setAttribute(
+      "points",
+      state.windowOpen
+        ? "109,8 222,8 222,141 109,141" // open
+        : "9,8 222,8 222,141 9,141"     // closed
+    );
+  }
+
+  // Flowers
+  el("flowers").classList.toggle("hidden", !state.flowersAdded);
+
+  // Tables
+  el("table2").classList.toggle("hidden", !state.extraTable);
+
+  // Backpack
+  el("backpackLean").classList.toggle("hidden", state.backpackOnTable);
+  el("backpackOnTable").classList.toggle("hidden", !state.backpackOnTable);
+
+  // Bed move/rotate
+  const bed = el("bedRig");
+  let x = 400, y = 240;
+  if (state.bedCorner){
+    x = 705; y = 240;
+  }
+  const sx = state.bedRotated ? -1 : 1;
+
+  // Flip around the bed rig's horizontal center so it doesn't "jump" when moved.
+  // bedRig local bounds are roughly x=-10..300, so center is ~145.
+  const cx = 145;
+
+  bed.setAttribute("transform", `translate(${x} ${y}) translate(${cx} 0) scale(${sx} 1) translate(${-cx} 0)`);
+}
+
+/* ---------------------------
+   Options list
+----------------------------*/
+const options = [
+  {id:1,  label:"Clean up the trash papers from the floor.", once:true},
+  {id:2,  label:"Fold the blanket.", once:true},
+  {id:3,  label:"Replace the holey curtain with a new one.", once:true},
+  {id:4,  label:"Close the curtain.", once:true},
+  {id:5,  label:"Open the window.", once:true},
+  {id:6,  label:"Add another table.", once:true},
+  {id:7,  label:"Add flowers under the window.", once:true},
+  {id:8,  label:"Add a spine friendly mattress.", once:true},
+  {id:9,  label:"Move the bed to the corner.", once:true},
+  {id:10, label:"Rotate the bed.", once:true},
+  {id:11, label:"Flip the pillow.", once:true},
+  {id:12, label:"Wash the bedding.", once:true},
+  {id:13, label:"Give up.", once:true},
+  {id:14, label:"Put the backpack on the table.", once:true},
+  {id:15, label:"Sweep the floor.", once:true},
+  {id:16, label:"I'm done.", visible: () => state.score !== 0}
+];
+
+function renderOptions(){
+  const list = el("optList");
+  list.innerHTML = "";
+  for (const opt of options){
+    if (opt.visible && !opt.visible()) continue;
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "optBtn";
+    btn.dataset.option = String(opt.id);
+
+    const alreadyUsed = !!state.usedOptions[opt.id];
+
+    if (opt.once && alreadyUsed) {
+      btn.disabled = true;              // prevents clicking
+      btn.classList.add("used");        // for custom styling
+    }
+
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = String(opt.id);
+
+    const text = document.createElement("span");
+    text.className = "optText";
+    text.textContent = opt.label;
+
+    btn.appendChild(badge);
+    btn.appendChild(text);
+    btn.addEventListener("click", () => openDialogForOption(opt.id));
+
+    li.appendChild(btn);
+    list.appendChild(li);
+  }
+}
+
+/* ---------------------------
+   Dialog system
+----------------------------*/
+const overlay = el("overlay");
+const dialogText = el("dialogText");
+const actions = el("dialogActions");
+
+let currentDialog = null;
+let autoCloseTimer = null;
+
+function closeDialog(){
+  if (autoCloseTimer){
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = null;
+  }
+  overlay.classList.remove("show");
+  currentDialog = null;
+  dialogText.innerHTML = "";
+  actions.innerHTML = "";
+}
+
+function showDialog(dialog){
+  currentDialog = dialog;
+  overlay.classList.add("show");
+  goToNode("start");
+}
+
+function isPointAwardNode(node){
+  return typeof node?.text === "string" && /\b1 point\b/i.test(node.text);
+}
+
+function nodeHasHighlight(node){
+  return typeof node?.text === "string" && node.text.includes("[[H]]");
+}
+
+function goToNode(nodeId){
+  if (!currentDialog) return;
+  const node = currentDialog.nodes[nodeId];
+  if (!node) return;
+
+  currentDialog.nodeId = nodeId;
+  dialogText.innerHTML = safeHtmlFromTokenText(node.text);
+
+  actions.innerHTML = "";
+  if (node.choices && node.choices.length){
+    for (const ch of node.choices){
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn" + (ch.primary ? " primary" : "") + (ch.danger ? " danger" : "");
+      b.textContent = ch.label;
+      b.addEventListener("click", async () => {
+        if (ch.onPick) await ch.onPick();
+        if (ch.next === "close") return closeDialog();
+        if (ch.next === "evaluation") return showEvaluation();
+
+        // If the next node is a "1 point" success node, don't show it
+        // unless it contains highlight text; then show it with an OK button.
+        const nextNode = currentDialog?.nodes?.[ch.next];
+        if (isPointAwardNode(nextNode)) {
+          if (nextNode.onEnter) nextNode.onEnter();
+
+          // Only show something if there's highlighted content to show.
+          if (nodeHasHighlight(nextNode)) {
+            dialogText.innerHTML = safeHtmlFromTokenText(nextNode.text);
+
+            actions.innerHTML = "";
+            const ok = document.createElement("button");
+            ok.type = "button";
+            ok.className = "btn primary";
+            ok.textContent = "OK";
+            ok.addEventListener("click", () => closeDialog());
+            actions.appendChild(ok);
+            return;
+          }
+
+          return closeDialog();
+        }
+
+        goToNode(ch.next);
+
+      });
+      actions.appendChild(b);
+    }
+  } else {
+    // No choices: only keep the dialog open if there's highlighted text to show;
+    // otherwise close immediately.
+    if (nodeHasHighlight(node)) {
+      actions.innerHTML = "";
+      const ok = document.createElement("button");
+      ok.type = "button";
+      ok.className = "btn primary";
+      ok.textContent = "OK";
+      ok.addEventListener("click", () => closeDialog());
+      actions.appendChild(ok);
+    } else {
+      if (node.onEnter) node.onEnter();
+      closeDialog();
+      return;
+    }
+  }
+
+  if (node.onEnter) node.onEnter();
+}
+
+function highlightToMeFor2s(ms = 3000){
+  const span = dialogText.querySelector("[data-hl='1']");
+  if (!span) return Promise.resolve(false);
+
+  span.classList.add("hl-on");
+  return new Promise(resolve => {
+    setTimeout(() => {
+      span.classList.remove("hl-on");
+      resolve(true);
+    }, ms);
+  });
+}
+
+function openDialogForOption(optionId){
+  const opt = options.find(o => o.id === optionId);
+
+  // If it's a one-time option and it's already been used, do nothing.
+  if (opt?.once && state.usedOptions[optionId]) return;
+
+  const dialog = dialogs[optionId];
+  if (!dialog) return;
+  showDialog({title: `Option ${optionId}`, optionId, nodes: dialog});
+}
+
+/* ---------------------------
+   Evaluation (text preserved from earlier build)
+----------------------------*/
+function evaluationTextForScore(score){
+  if (score === 0){
+    return `Congratulations! \\(^.^)/\nYou have recognized that Bob's room is already as improved as it can get and the only person who can actually improve it further is Bob himself and not us or anyone else!\nYou might think we have lost, but no - we have recognized our position here and we did made the right call!\n\n---Bob is proud of you!---\nRestart?`;
+  }
+  if (score === 1){
+    return `Congratulations!\nYou have only made Bob's room slightly worse! (._.)\nYou might ponder now... why is that?\nThe only thing I actually did was wrong?\nLet's restart and figure this out!\n\nBob would be slightly angry with you.\n---Bob will restore the room to it's original organized state.---\nRestart?`;
+  }
+  if (score === 2){
+    return `Congratulations!\nYou have made Bob's room moderately worse! (O_O')\nYou might ponder now... why is that?\nWasn't Bob happy with our choice of improvements?\nDid we improve the wrong things?\nLet's restart and figure this out!\n\nBob would be real angry with you, and likely not leave you unsupervised in the room next time.\n---Bob might be able to restore the room to it's original organized state.---\nRestart?`;
+  }
+  return `Congratulations!\nYou have made Bob's room significantly worse! (x_x)\nYou likely not understand why is that.\nPerhaps try improving fewer things at a time?\nLet's restart and figure this out!\n\n---Bob would be real angry with you, and would not invite you to his room ever again.---\nRestart?`;
+}
+
+function showEvaluation(){
+  const txt = evaluationTextForScore(state.score);
+  currentDialog = {
+    title:"Evaluation",
+    optionId: 0,
+    nodes:{
+      start:{
+        text: txt,
+        choices:[
+          {label:"Yes", primary:true, next:"restart"}
+        ]
+      },
+      restart:{
+        text:"Restart?",
+        onEnter: () => restartGame(),
+        autoCloseMs: 10
+      }
+    }
+  };
+  overlay.classList.add("show");
+  goToNode("start");
+}
+
+function restartGame(){
+  state.score = 0;
+  state.papersRemoved = false;
+  state.blanketFolded = false;
+  state.curtainNew = false;
+  state.curtainClosed = false; // open by default
+  state.windowOpen = false;
+  state.extraTable = false;
+  state.flowersAdded = false;
+  state.mattressSpine = false;
+  state.bedCorner = false;
+  state.bedRotated = false;
+  state.pillowFlipped = false;
+  state.beddingRemoved = false;
+  state.backpackOnTable = false;
+  state.floorSwept = false;
+  state.usedOptions = {};
+
+  setCounter();
+  updateScene();
+  closeDialog();
+}
+
+/* ---------------------------
+   Dialog content
+----------------------------*/
+const dialogs = {
+  1: { // Clean papers
+    start: {
+      text:
+`Do you think the wrinkled papers on the floor are trash?
+Do you think Bob thinks of them the same?
+
+Should we proceed clean it up?`,
+      choices: [
+        {label:"Yes", primary:true, next:"a"},
+        {label:"No", next:"close"}
+      ]
+    },
+    a: {
+      text:
+`If the papers on the ground would really be trash, that would mean Bob's room is not organized because it has trash on the ground.
+In short, Bob is not organized if his room has trash around.
+
+Do you agree?`,
+      choices: [
+        {label:"Yes", primary:true, next:"b"},
+        {label:"No", next:"c"}
+      ]
+    },
+    b: {
+      text:
+`But we do know for a fact that Bob is organized, right?
+In that case we can conclude that the papers on the ground are in fact no trash.
+It must be, because otherwise, the room is not organized, thereby Bob also. Which can not be.
+So, we already know that it has a purpose being there, so who knows it could be important.
+
+What do you think? Would you still throw it away despite we know it is there on purpose?`,
+      choices: [
+        {label:"Yes", primary:true, next:"d"},
+        {label:"No", next:"close"}
+      ]
+    },
+    d: {
+      text:
+`Keep it mind, we are here to improve the room, and we are about to throw something away that we know are meant to be there.
+
+Would throwing this away would be a real improvement?`,
+      choices: [
+        {label:"Yes", primary:true, next:"e", onPick: async () => {
+          const did = awardPointOnce(1, "papersRemoved");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    e: { text:`The papers are gone.\n1 point`, autoCloseMs: 1800 },
+    c: {
+      text:
+`Are you saying Bob is organized when his room is not? - Weird.
+That means the papers are there for a reason.`,
+      choices: [
+        {label:"Yes", primary:true, next:"close"}
+      ]
+    }
+  },
+
+  2: { // Fold blanket
+    start: {
+      text:`Do you think Bob left the blanket unfolded out of carelessness?`,
+      choices:[
+        {label:"Yes", primary:true, next:"a"},
+        {label:"No", next:"b"}
+      ]
+    },
+    a:{
+      text:
+`But we do know that Bob is organized, right?
+Why would he leave the blanket unfolded then?
+This doesn't make any sense...
+Unless... it's on purpose!
+Okay, so - Bob left the blanket there as it is for a reason.
+
+Should we proceed folding it anyway?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(2, "blanketFolded");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    b:{
+      text:
+`Then why would you fold it?
+
+Should we leave it as it is?`,
+      choices:[
+        {label:"Yes", primary:true, next:"close"},
+        {label:"No", next:"c"}
+      ]
+    },
+    c:{
+      text:
+`So... we are folding it for no reason?
+
+Should we fold it anyway?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(2, "blanketFolded");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`The wrinkled blanket is replaced with a folded one.\n1 point`, autoCloseMs: 1800 }
+  },
+
+  3: { // Replace curtain
+    start:{
+      text:
+`It's weird that Bob left such an old holey curtain hanging there, isn't it?
+
+Do you think that's something worth giving a thought to?`,
+      choices:[
+        {label:"Yes", primary:true, next:"a"},
+        {label:"No", next:"b"}
+      ]
+    },
+    a:{
+      text:
+`Alright.
+Let's get the cogs started!
+
+Why would Bob do that?
+Why would Bob leave such an old holey curtain hanging right there?
+
+Do you think he had a plan with it?
+Do you think he is already in the process of replacing it with a new one himself?
+Do you think the curtain has some sort of sentimental value to him?
+
+Should we proceed replacing the old curtain despite our newly gained doubts?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(3, "curtainNew");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    b:{
+      text:
+`Agreed.
+Why should we waste time with such nonsense anyway?
+We are the authority here after all.
+
+Should we proceed replacing that old joke of a curtain with a new stylish one?
+Bob is certainly will be grateful for that, right?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(3, "curtainNew");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`The old holey curtain is replaced with a new one.\n1 point`, autoCloseMs: 1800 }
+  },
+
+  4: { // Close curtain (swapped)
+    start:{
+      text:
+`Why would he leave the curtain open on such a day?
+The sun is burning hot, right?
+This is fairly obvious that we have to close the curtain, right?
+
+Should we close the curtain?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(4, "curtainClosed");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"a"}
+      ]
+    },
+    a:{
+      text:
+`What do you mean no?
+Why not?
+
+Is there something we should consider?`,
+      choices:[
+        {label:"Yes", primary:true, next:"b"},
+        {label:"No", next:"c"}
+      ]
+    },
+    b:{
+      text:
+`Like what?
+What reason Bob could have in his mind that made him think that the curtain is meant to be open today?!?
+
+Let's sit back a little and gather what we know before we force the issue.
+
+All we know right now is that Bob is organized, right?
+That might leave us with a hint that he might just have left the curtain open for a reason, right?
+
+Should we take a risk and close the curtain despite that we don't know why it is open?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(4, "curtainClosed");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    c:{
+      text:
+`Then let's just close the curtain already!`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(4, "curtainClosed");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`The curtain is closed.\n1 point`, autoCloseMs: 1700 }
+  },
+
+  5: { // Open window
+  start:{
+    text:
+`Weird.
+The window is closed.
+Why would he leave the window closed on such a beautiful day?
+
+Should we just open it?
+That sounds like an improvement [[H]]to me[[/H]].`,
+    choices:[
+      {label:"Yes", primary:true, next:"done", onPick: async () => {
+        actions.innerHTML = "";          // buttons disappear during waiting
+        await highlightToMeFor2s(3000);  // keep dialog open for 2 seconds
+        awardPointOnce(5, "windowOpen");
+      }},
+      {label:"No", next:"close"}
+    ]
+  },
+  done:{ text:`Highlights the text: "to me" for 2 seconds.\nThe window opens.\n1 point`, autoCloseMs: 1900 }
+},
+
+  6: { // Add another table
+  start:{
+    text:
+`This room feels quite empty [[H]]to me[[/H]].
+
+Why don't we just add another table?
+I'm sure Bob would appreciate that.
+
+Should we add a new table to room?`,
+    choices:[
+      {label:"Yes", primary:true, next:"done", onPick: async () => {
+        actions.innerHTML = "";          // buttons disappear during waiting
+        await highlightToMeFor2s(3000);  // keep dialog open for 2 seconds
+        awardPointOnce(6, "extraTable");
+      }},
+      {label:"No", next:"close"}
+    ]
+  },
+  done:{ text:`Highlights the text: "to me" for 2 seconds.\nAdd another table to the room.\n1 point`, autoCloseMs: 1900 }
+},
+
+  7: { // Add flowers
+    start:{
+      text:
+`The flowers?
+Yes - the flowers are indeed missing from under the window!
+
+Bob should know better, right?`,
+      choices:[
+        {label:"Yes", primary:true, next:"a"},
+        {label:"No", next:"b"}
+      ]
+    },
+    a:{
+      text:
+`Yes, he really should have known what belongs under the window!`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(7, "flowersAdded");
+          if (!did) closeDialog();
+        }}
+      ]
+    },
+    b:{
+      text:
+`No?
+Then what should we do then?
+
+Add the flowers anyway?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(7, "flowersAdded");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`A flower vase added under the window.\n1 point`, autoCloseMs: 1800 }
+  },
+
+  8: { // Mattress
+    start:{
+      text:
+`Look at his mattress!
+It's way too soft for a decent human to lay on, right?
+
+Should we replace his mattress with a better, spine friendly one?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(8, "mattressSpine");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`The mattress is replaced.\n1 point`, autoCloseMs: 1700 }
+  },
+
+  9: { // Move bed corner
+    start:{
+      text:
+`That bed over there.
+Yes, that one.
+That is surely out of place where it is now.
+Moving it to the corner is much more convenient due to less air flow impact, and it is comfortable to sleep there.
+
+Shall we move his bed to the corner?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(9, "bedCorner");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`The bed is moved to the corner.\n1 point`, autoCloseMs: 1700 }
+  },
+
+  10: { // Rotate bed
+    start:{
+      text:
+`His bed.
+It is easy to see that his bed is facing the wrong direction.
+I'm sure he did not mean to have his bed facing that side.
+
+Should we rotate his bed into to correct direction for him?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(10, "bedRotated");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`Rotate the bed.\n1 point`, autoCloseMs: 1600 }
+  },
+
+  11: { // Flip pillow
+    start:{
+      text:
+`It might seem like a minor improvement at first, but in fact occasional pillow flipping
+improves sleep quality by having the dirty side facing downwards.
+I'm quite sure he does not know this.
+Why would he?
+Let's not waste time and help him out.
+
+Should we flip his pillow?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(11, "pillowFlipped");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`Flip the pillow.\n1 point`, autoCloseMs: 1600 }
+  },
+
+  12: { // Wash bedding
+    start:{
+      text:
+`From here, it looks as if his bedding have not been washed lately.
+There is no time to waste, he could be back at any moment.
+We have to make as much improvements as we can before that!
+Let's make haste and remove the sheet cover.
+
+Should we wash his bedding for him?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(12, "beddingRemoved");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`Remove the bedding.\n1 point`, autoCloseMs: 1700 }
+  },
+
+  13: { // Give up
+    start:{
+      text:
+`Why are you so quick to give up?
+There is plenty of things we can do instead of just giving up.
+Come on now!
+
+Shall we continue with the improvements instead?`,
+      choices:[
+        {label:"Yes", primary:true, next:"close"},
+        {label:"No", next:"a", danger:true}
+      ]
+    },
+    a:{
+      text:
+`What?
+But look at his room it's a mess!
+He clearly needs our help!
+
+Let's try a couple things before we just give up, okay?`,
+      choices:[
+        {label:"Yes", primary:true, next:"close"},
+        {label:"No", next:"b", danger:true}
+      ]
+    },
+    b:{
+      text:
+`Alright, alright.
+If you insist, I won't and can't hold you back.
+But... I will ask you one more time just to be sure.
+
+Are you sure you are giving up right here and now?`,
+      choices:[
+        {label:"Yes", primary:true, next:"evaluation", danger:true},
+        {label:"No", next:"close"}
+      ]
+    }
+  },
+
+  14: { // Backpack on table
+    start:{
+      text:
+`Look like he forgot to put his backpack on the table.
+I know that many people would rather prefer keeping their bags on the table rather than next to it.
+He might not be as organized as he claims he is?
+
+Should we put the backpack on the table?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(14, "backpackOnTable");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`Move the backpack to the table.\n1 point`, autoCloseMs: 1700 }
+  },
+
+  15: { // Sweep floor
+    start:{
+      text:
+`A little sweeping here and there can not hurt anybody, right?
+Let's do this!
+Let's sweep his floor!
+
+Should we sweep his floor?`,
+      choices:[
+        {label:"Yes", primary:true, next:"done", onPick: async () => {
+          const did = awardPointOnce(15, "floorSwept");
+          if (!did) closeDialog();
+        }},
+        {label:"No", next:"close"}
+      ]
+    },
+    done:{ text:`Sweep the floor.\n1 point`, autoCloseMs: 1600 }
+  },
+
+  16: { // I'm done
+    start:{
+      text:
+`Are you certainly done with the improvements?
+We might can do more for him, no?
+
+Are you sure?`,
+      choices:[
+        {label:"Yes", primary:true, next:"evaluation"},
+        {label:"No", next:"close"}
+      ]
+    }
+  }
+};
+
+/* ---------------------------
+   Music (charmier: simple kalimba-like loop)
+----------------------------*/
+let audioCtx = null;
+let musicTimer = null;
+let master = null;
+
+function ensureAudio(){
+  if (!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (!master){
+    master = audioCtx.createGain();
+    master.gain.value = 0.35;
+
+    // soft echo
+    const delay = audioCtx.createDelay(1.0);
+    delay.delayTime.value = 0.18;
+    const fb = audioCtx.createGain();
+    fb.gain.value = 0.22;
+
+    // gentle lowpass
+    const lp = audioCtx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 1800;
+
+    master.connect(lp);
+    lp.connect(audioCtx.destination);
+
+    // feedback loop (tap after filter to stay soft)
+    lp.connect(delay);
+    delay.connect(fb);
+    fb.connect(delay);
+    delay.connect(audioCtx.destination);
+
+    master._delay = delay;
+    master._fb = fb;
+    master._lp = lp;
+  }
+}
+
+function pluck(freq, t){
+  const ctx = audioCtx;
+
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  // a bit of "wood" via triangle + slight detune
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(freq, t);
+  osc.detune.setValueAtTime((Math.random() * 10) - 5, t);
+
+  // fast attack, exponential decay
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(0.25, t + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+
+  osc.connect(gain);
+  gain.connect(master);
+
+  osc.start(t);
+  osc.stop(t + 0.60);
+}
+
+function startMusic(){
+  if (state.musicOn) return;
+  state.musicOn = true;
+  el("musicBtn").textContent = "On";
+  el("musicBtn").setAttribute("aria-pressed","true");
+
+  ensureAudio();
+  const ctx = audioCtx;
+
+  // C major pentatonic-ish
+  const scale = [261.63, 293.66, 329.63, 392.00, 440.00]; // C D E G A
+  const pattern = [0,2,4,2, 0,3,4,3, 0,2,3,2, 4,3,2,0];
+  let step = 0;
+
+  const bpm = 92;
+  const intervalMs = (60_000 / bpm) / 2; // 8th notes
+
+  // 2nd timbre: warm/soft pluck
+  function pluckSoft(freq, t){
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    const f = ctx.createBiquadFilter();
+
+    o.type = "triangle";
+    o.frequency.setValueAtTime(freq, t);
+
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.14, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.20);
+
+    f.type = "lowpass";
+    f.frequency.setValueAtTime(1400, t);
+    f.Q.setValueAtTime(0.7, t);
+
+    o.connect(f);
+    f.connect(g);
+    g.connect(ctx.destination);
+
+    o.start(t);
+    o.stop(t + 0.24);
+  }
+
+  // Sections:
+  // original (stable) -> fade to soft (deterministic) -> soft (stable) -> fade back (deterministic)
+  const sectionLen = 32; // 4 bars of 8ths
+  const xfadeLen   = 16; // 2 bars
+  const cycleLen   = sectionLen * 2 + xfadeLen * 2;
+
+  // Returns soft amount 0..1
+  function softMixAmount(step){
+    const pos = step % cycleLen;
+
+    if (pos < sectionLen) return 0;
+
+    if (pos < sectionLen + xfadeLen) {
+      // fade IN to soft
+      const x = (pos - sectionLen) / xfadeLen;
+      // ease-in so early part is gentler (less “sudden”)
+      return x * x;
+    }
+
+    if (pos < sectionLen + xfadeLen + sectionLen) return 1;
+
+    // fade OUT back to original (keep it linear since you already like it)
+    return 1 - ((pos - (sectionLen + xfadeLen + sectionLen)) / xfadeLen);
+  }
+
+  // Deterministic blend: within each 8-step block, swap the last N steps to soft.
+  // As mix grows, N grows. No randomness => no weird pops.
+  function useSoftDeterministic(step){
+    const mix = softMixAmount(step);              // 0..1
+    const slots = Math.round(mix * 8);            // 0..8 notes per 8-step block become soft
+    const s8 = step % 8;                          // position inside the block
+    return slots > 0 && s8 >= (8 - slots);        // last "slots" notes are soft
+  }
+
+  const tick = () => {
+    if (!state.musicOn) return;
+    const t = ctx.currentTime + 0.02;
+
+    // bass unchanged (same charm)
+    if (step % 8 === 0) pluck(130.81, t); // C3
+
+    const idx = pattern[step % pattern.length];
+    const f0  = scale[idx] * (step % 16 < 8 ? 1 : 2); // your original lift
+
+    if (useSoftDeterministic(step)) pluckSoft(f0, t);
+    else pluck(f0, t);
+
+    step++;
+  };
+
+  tick();
+  musicTimer = setInterval(tick, intervalMs);
+}
+
+function stopMusic(){
+  if (!state.musicOn) return;
+  state.musicOn = false;
+  el("musicBtn").textContent = "Off";
+  el("musicBtn").setAttribute("aria-pressed","false");
+  if (musicTimer){
+    clearInterval(musicTimer);
+    musicTimer = null;
+  }
+}
+
+/* ---------------------------
+   Wiring
+----------------------------*/
+el("closeModal").addEventListener("click", closeDialog);
+overlay.addEventListener("click", (e) => { if (e.target === overlay) closeDialog(); });
+
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+
+  if (aboutOverlay.classList.contains("show")) closeAbout();
+  else closeDialog();
+});
+
+el("musicBtn").addEventListener("click", async () => {
+  ensureAudio();
+  if (audioCtx.state === "suspended") { try { await audioCtx.resume(); } catch {} }
+  if (state.musicOn) stopMusic();
+  else startMusic();
+});
+
+const aboutOverlay = el("aboutOverlay");
+
+function openAbout(){
+  aboutOverlay.classList.add("show");
+}
+function closeAbout(){
+  aboutOverlay.classList.remove("show");
+}
+
+el("aboutBtn").addEventListener("click", openAbout);
+el("closeAbout").addEventListener("click", closeAbout);
+el("aboutOk").addEventListener("click", closeAbout);
+aboutOverlay.addEventListener("click", (e) => {
+  if (e.target === aboutOverlay) closeAbout();
+});
+
+// initial
+renderOptions();
+setCounter();
+updateScene();
+</script>
+</body>
+</html>
