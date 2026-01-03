@@ -379,6 +379,17 @@
       font-weight: 800;
     }
 
+    .pill select{
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(15,23,42,.03);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
     @media (max-width: 860px){
       .app{padding: 10px;}
       header{gap:10px;}
@@ -425,17 +436,23 @@
       </h1>
       <div class="pillrow">
         <div class="pill" aria-label="Controls">
-          <small>Music</small>
+          <small id="musicLabel">Music</small>
           <button id="musicBtn" type="button" aria-pressed="false">Off</button>
           <button id="aboutBtn" type="button">About</button>
+          <select id="langSel" aria-label="Language">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="hu">Magyar</option>
+          </select>
         </div>
       </div>
     </div>
 
     <header>
       <div class="msgcol">
-        <div class="box small">Bob is an organized person who likes simplicity.</div>
-        <div class="box big">How can you improve Bob's room?</div>
+        <div class="box small" id="introSmall">Bob is an organized person who likes simplicity.</div>
+        <div class="box big" id="introBig">How can you improve Bob's room?</div>
       </div>
     </header>
 
@@ -899,18 +916,16 @@
 
       <div class="modalBody">
         <div class="aboutText">
-          <p><strong>Creators:</strong> Swintleton</p>
-          <p><strong>GitHub:</strong>
+          <p><strong><span id="aboutCreatorsLabel">Creators</span>:</strong> Swintleton</p>
+          <p><strong><span id="aboutGithubLabel">GitHub</span>:</strong>
             <a href="https://github.com/Swintleton/Bobs-room" target="_blank" rel="noopener noreferrer">
               github.com/Swintleton/Bobs-room
             </a>
           </p>
-          <p><strong>Email:</strong>
+          <p><strong><span id="aboutEmailLabel">Email</span>:</strong>
             <a href="mailto:keragon2@gmail.com">keragon2@gmail.com</a>
           </p>
-          <p><strong>Version:</strong>
-            1.0
-          </p>
+          <p><strong><span id="aboutVersionLabel">Version</span>:</strong> 1.0.1</p>
         </div>
       </div>
 
@@ -954,12 +969,232 @@ const state = {
 
 const el = (id) => document.getElementById(id);
 
+// --- i18n -------------------------------------------------
+const I18N = {
+  en: {
+    ui: {
+      music: "Music",
+      about: "About",
+      on: "On",
+      off: "Off",
+      introSmall: "Bob is an organized person who likes simplicity.",
+      introBig: "How can you improve Bob's room?",
+      improvements: { one: "improvement", many: "improvements" },
+
+      aboutTitle: "About",
+      creators: "Creators",
+      github: "GitHub",
+      email: "Email",
+      version: "Version",
+      ok: "OK",
+      yes: "Yes",
+      no: "No",
+      evaluationTitle: "Evaluation",
+      restartQ: "Restart?",
+    },
+    options: {
+      1:"Clean up the trash papers from the floor.",
+      2:"Fold the blanket.",
+      3:"Replace the holey curtain with a new one.",
+      4:"Close the curtain.",
+      5:"Open the window.",
+      6:"Add another table.",
+      7:"Add flowers under the window.",
+      8:"Add a spine friendly mattress.",
+      9:"Move the bed to the corner.",
+      10:"Rotate the bed.",
+      11:"Flip the pillow.",
+      12:"Wash the bedding.",
+      13:"Give up.",
+      14:"Put the backpack on the table.",
+      15:"Sweep the floor.",
+      16:"I'm done."
+    }
+  },
+
+  es: {
+    ui: {
+      music: "Música",
+      on: "On",
+      off: "Off",
+      about: "Acerca de",
+      aboutTitle: "Acerca de",
+      creators: "Creadores",
+      github: "GitHub",
+      email: "Email",
+      introSmall: "Bob es una persona ordenada a la que le gusta la sencillez.",
+      introBig: "¿Cómo puedes mejorar la habitación de Bob?",
+      improvementsOne: "mejora",
+      improvementsMany: "mejoras",
+      evaluationTitle: "Evaluación",
+      restartQ: "¿Reiniciar?",
+      yes: "Sí",
+      no: "No",
+      ok: "OK"
+    },
+    options: {
+      1: "Recoger los papeles arrugados del suelo.",
+      2: "Doblar la manta.",
+      3: "Reemplazar la cortina agujereada por una nueva.",
+      4: "Cerrar la cortina.",
+      5: "Abrir la ventana.",
+      6: "Añadir otra mesa.",
+      7: "Poner flores bajo la ventana.",
+      8: "Cambiar el colchón por uno más firme (para la espalda).",
+      9: "Mover la cama a la esquina.",
+      10: "Girar la cama.",
+      11: "Dar la vuelta a la almohada.",
+      12: "Lavar la ropa de cama.",
+      13: "Rendirse.",
+      14: "Poner la mochila sobre la mesa.",
+      15: "Barrer el suelo.",
+      16: "He terminado."
+    }
+  },
+
+  it: {
+    ui: {
+      music: "Musica",
+      on: "On",
+      off: "Off",
+      about: "Info",
+      aboutTitle: "Info",
+      creators: "Creatori",
+      github: "GitHub",
+      email: "Email",
+      introSmall: "Bob è una persona ordinata a cui piace la semplicità.",
+      introBig: "Come puoi migliorare la stanza di Bob?",
+      improvementsOne: "miglioria",
+      improvementsMany: "migliorie",
+      evaluationTitle: "Valutazione",
+      restartQ: "Ricominciare?",
+      yes: "Sì",
+      no: "No",
+      ok: "OK"
+    },
+    options: {
+      1: "Raccogliere i fogli stropicciati dal pavimento.",
+      2: "Piegare la coperta.",
+      3: "Sostituire la tenda bucata con una nuova.",
+      4: "Chiudere la tenda.",
+      5: "Aprire la finestra.",
+      6: "Aggiungere un altro tavolo.",
+      7: "Mettere dei fiori sotto la finestra.",
+      8: "Sostituire il materasso con uno più adatto alla schiena.",
+      9: "Spostare il letto nell’angolo.",
+      10: "Ruotare il letto.",
+      11: "Girare il cuscino.",
+      12: "Lavare la biancheria da letto.",
+      13: "Arrendersi.",
+      14: "Mettere lo zaino sul tavolo.",
+      15: "Spazzare il pavimento.",
+      16: "Ho finito."
+    }
+  },
+
+  hu: {
+    ui: {
+      music: "Zene",
+      about: "Névjegy",
+      on: "Be",
+      off: "Ki",
+      introSmall: "Bob rendezett ember, aki szereti az egyszerűséget.",
+      introBig: "Hogyan tudnád javítani Bob szobáját?",
+      // Hungarian usually uses singular after numbers: "2 javítás"
+      improvements: { one: "javítás", many: "javítás" },
+
+      aboutTitle: "Névjegy",
+      creators: "Készítők",
+      github: "GitHub",
+      email: "Email",
+      version: "Verzió",
+      ok: "OK",
+      yes: "Igen",
+      no: "Nem",
+      evaluationTitle: "Értékelés",
+      restartQ: "Újrakezdés?",
+    },
+    options: {
+      1:"Szedjük fel a gyűrött papírokat a földről.",
+      2:"Hajtsuk össze a takarót.",
+      3:"Cseréljük le a lyukas függönyt egy újra.",
+      4:"Húzzuk be a függönyt.",
+      5:"Nyissuk ki az ablakot.",
+      6:"Tegyünk be még egy asztalt.",
+      7:"Tegyünk virágokat az ablak alá.",
+      8:"Tegyünk be gerincbarát matracot.",
+      9:"Tegyük az ágyat a sarokba.",
+      10:"Fordítsuk meg az ágyat.",
+      11:"Fordítsuk meg a párnát.",
+      12:"Mossuk ki az ágyneműt.",
+      13:"Feladom.",
+      14:"Tegyük a hátizsákot az asztalra.",
+      15:"Söpörjük fel a padlót.",
+      16:"Kész vagyok."
+    }
+  }
+};
+
+state.lang = localStorage.getItem("lang") || "en";
+
+function t(path){
+  const langPack = I18N[state.lang] || I18N.en;
+  const parts = path.split(".");
+  let cur = langPack;
+  for (const p of parts) cur = cur?.[p];
+  // fallback to English if missing
+  if (cur == null){
+    cur = I18N.en;
+    for (const p of parts) cur = cur?.[p];
+  }
+  return cur;
+}
+
+function optionLabel(id){
+  return (I18N[state.lang]?.options?.[id]) ?? I18N.en.options[id] ?? `Option ${id}`;
+}
+
+function improvementWord(n){
+  const imp = t("ui.improvements");
+  return (n === 1) ? imp.one : imp.many;
+}
+
+function setMusicButtonText(){
+  el("musicBtn").textContent = state.musicOn ? t("ui.on") : t("ui.off");
+}
+
+function applyLanguage(lang){
+  state.lang = lang;
+  localStorage.setItem("lang", lang);
+
+  // top bar
+  el("musicLabel").textContent = t("ui.music");
+  el("aboutBtn").textContent   = t("ui.about");
+
+  // header boxes
+  el("introSmall").textContent = t("ui.introSmall");
+  el("introBig").textContent   = t("ui.introBig");
+
+  // about modal labels
+  el("aboutTitle").textContent         = t("ui.aboutTitle");
+  el("aboutCreatorsLabel").textContent = t("ui.creators");
+  el("aboutGithubLabel").textContent   = t("ui.github");
+  el("aboutEmailLabel").textContent    = t("ui.email");
+  el("aboutVersionLabel").textContent  = t("ui.version");
+  el("aboutOk").textContent            = t("ui.ok");
+
+  // dynamic UI
+  setMusicButtonText();
+  setCounter();     // rebuilds "X improvements"
+  renderOptions();  // rebuilds option labels
+}
+
 function pluralize(n, one, many){
   return n === 1 ? one : many;
 }
 
 function setCounter(){
-  el("counter").textContent = `${state.score} ${pluralize(state.score, "improvement", "improvements")}`;
+  el("counter").textContent = `${state.score} ${improvementWord(state.score)}`;
   renderOptions();
 }
 
@@ -1115,7 +1350,7 @@ function renderOptions(){
 
     const text = document.createElement("span");
     text.className = "optText";
-    text.textContent = opt.label;
+    text.textContent = optionLabel(opt.id);
 
     btn.appendChild(badge);
     btn.appendChild(text);
@@ -1161,13 +1396,655 @@ function nodeHasHighlight(node){
   return typeof node?.text === "string" && node.text.includes("[[H]]");
 }
 
+const DIALOG_TEXT = {
+  es: {
+  1: {
+    start: `¿Crees que los papeles arrugados del suelo son basura?
+¿Crees que Bob lo ve igual?
+
+¿Deberíamos recogerlos?`,
+    a: `Si los papeles del suelo fueran realmente basura, eso significaría que la habitación de Bob no está ordenada, porque tiene basura en el suelo.
+En resumen: Bob no es ordenado si su habitación tiene basura por ahí.
+
+¿Estás de acuerdo?`,
+    b: `Pero sabemos con certeza que Bob es ordenado, ¿verdad?
+En ese caso podemos concluir que los papeles del suelo no son basura.
+Tiene que ser así, porque si no, la habitación no estaría ordenada, y por lo tanto Bob tampoco. Y eso no puede ser.
+Así que ya sabemos que están ahí por una razón; quién sabe, quizá sean importantes.
+
+¿Qué piensas?
+¿Aun así los tirarías, aunque sepamos que están ahí a propósito?`,
+    c: `¿Estás diciendo que Bob es ordenado cuando su habitación no lo es? — Qué raro.
+Eso significa que los papeles están ahí por una razón.`,
+    d: `Recuerda: estamos aquí para mejorar la habitación, y estamos a punto de tirar algo que sabemos que está ahí por una razón.
+
+¿Tirar esto sería una mejora real?`,
+    e: `Los papeles han desaparecido.\n1 punto`
+  },
+
+  2: {
+    start: `¿Crees que Bob dejó la manta sin doblar por descuido?`,
+    a: `Pero sabemos que Bob es ordenado, ¿verdad?
+Entonces, ¿por qué dejaría la manta sin doblar?
+No tiene sentido…
+A menos que… ¡sea a propósito!
+Vale: Bob la dejó así por una razón.
+
+¿Deberíamos doblarla de todos modos?`,
+    b: `Entonces, ¿por qué la doblarías?
+
+¿Deberíamos dejarla tal como está?`,
+    c: `O sea… ¿la doblamos sin ningún motivo?
+
+¿La doblamos igualmente?`,
+    done: `La manta arrugada es reemplazada por una doblada.\n1 punto`
+  },
+
+  3: {
+    start: `Es raro que Bob haya dejado colgada una cortina tan vieja y agujereada, ¿no?
+
+¿Crees que vale la pena pensarlo un poco?`,
+    a: `De acuerdo.
+¡Pongamos a trabajar los engranajes!
+
+¿Por qué haría eso Bob?
+¿Por qué dejaría una cortina tan vieja y agujereada ahí?
+
+¿Crees que tenía un plan?
+¿Crees que ya está en proceso de cambiarla él mismo por una nueva?
+¿Crees que la cortina tiene algún valor sentimental para él?
+
+¿Deberíamos reemplazarla a pesar de estas dudas?`,
+    b: `De acuerdo.
+¿Por qué perder tiempo con tonterías?
+Al fin y al cabo, aquí mandamos nosotros.
+
+¿Deberíamos reemplazar esa broma de cortina por una nueva y elegante?
+Bob seguramente nos lo agradecerá, ¿no?`,
+    done: `La vieja cortina agujereada es reemplazada por una nueva.\n1 punto`
+  },
+
+  4: {
+    start: `¿Por qué dejaría la cortina abierta en un día así?
+El sol está ardiendo, ¿no?
+Es bastante obvio que hay que cerrar la cortina, ¿no?
+
+¿Cerramos la cortina?`,
+    a: `¿Cómo que no?
+¿Por qué no?
+
+¿Hay algo que debamos tener en cuenta?`,
+    b: `¿Como qué?
+¿Qué razón podría tener Bob para pensar que hoy la cortina debe estar abierta?
+
+Tomemos aire y repasemos lo que sabemos antes de forzar nada.
+
+Sabemos que Bob es ordenado, ¿verdad?
+Eso podría ser una pista de que quizá dejó la cortina abierta por una razón, ¿no?
+
+¿Corremos el riesgo y la cerramos aunque no sepamos por qué está abierta?`,
+    c: `Entonces… ¡cerremos la cortina ya!`,
+    done: `La cortina está cerrada.\n1 punto`
+  },
+
+  5: {
+    start: `Qué raro.
+La ventana está cerrada.
+¿Por qué la dejaría cerrada en un día tan bonito?
+
+¿La abrimos?
+Eso suena como una mejora [[H]]para mí[[/H]].`,
+    done: `Resalta el texto: "para mí" durante 2 segundos.\nLa ventana se abre.\n1 punto`
+  },
+
+  6: {
+    start: `Esta habitación se siente bastante vacía [[H]]para mí[[/H]].
+
+¿Por qué no añadimos otra mesa?
+Seguro que Bob lo apreciaría.
+
+¿Añadimos una mesa nueva a la habitación?`,
+    done: `Resalta el texto: "para mí" durante 2 segundos.\nSe añade otra mesa a la habitación.\n1 punto`
+  },
+
+  7: {
+    start: `¿Las flores?
+Sí: faltan flores debajo de la ventana.
+
+Bob debería saberlo, ¿no?`,
+    a: `Sí, de verdad debería saber qué va debajo de la ventana.`,
+    b: `¿No?
+Entonces, ¿qué hacemos?
+
+¿Añadimos las flores igualmente?`,
+    done: `Se añade un jarrón con flores debajo de la ventana.\n1 punto`
+  },
+
+  8: {
+    start: `¡Mira ese colchón!
+Es demasiado blando para que una persona decente se acueste ahí, ¿no?
+
+¿Lo cambiamos por uno mejor, más adecuado para la espalda?`,
+    done: `El colchón es reemplazado.\n1 punto`
+  },
+
+  9: {
+    start: `Esa cama de ahí…
+Sí, esa.
+Seguro que está fuera de lugar donde está ahora.
+Moverla a la esquina es mucho más conveniente.
+
+¿Movemos la cama a la esquina?`,
+    done: `La cama se mueve a la esquina.\n1 punto`
+  },
+
+  10: {
+    start: `Mira esa cama…
+Está mirando hacia la dirección equivocada.
+
+¿La giramos?`,
+    done: `La cama se gira.\n1 punto`
+  },
+
+  11: {
+    start: `Esa almohada…
+Claramente está del lado equivocado, ¿no?
+
+¿La damos la vuelta?`,
+    done: `La almohada se da la vuelta.\n1 punto`
+  },
+
+  12: {
+    start: `Esa ropa de cama…
+Parece sucia.
+
+¿La lavamos?`,
+    done: `La ropa de cama se lava.\n1 punto`
+  },
+
+  13: {
+  start: `Entonces… ¿no quieres mejorar nada?
+
+¿Quieres rendirte?`,
+
+  a: `¿Qué?
+¡Pero mira su habitación, es un desastre!
+¡Está claro que necesita nuestra ayuda!
+
+Probemos un par de cosas antes de rendirnos, ¿vale?`,
+
+  b: `¿De verdad te rindes?
+
+¿Seguro?`
+  },
+
+  14: {
+    start: `Esa mochila…
+Está en el suelo.
+
+¿La ponemos sobre la mesa?`,
+    done: `La mochila se pone sobre la mesa.\n1 punto`
+  },
+
+  15: {
+    start: `El suelo…
+Podría barrerse.
+
+¿Barremos el suelo?`,
+    done: `El suelo se barre.\n1 punto`
+  },
+
+  16: {
+    start: `¿Has terminado con tus mejoras?
+
+¿Quieres ver la evaluación?`
+  }
+  },
+
+  it: {
+  1: {
+    start: `Pensi che i fogli stropicciati sul pavimento siano spazzatura?
+Pensi che Bob li veda allo stesso modo?
+
+Dovremmo raccoglierli?`,
+    a: `Se i fogli a terra fossero davvero spazzatura, significherebbe che la stanza di Bob non è ordinata, perché ha spazzatura sul pavimento.
+In breve: Bob non è ordinato se nella sua stanza c’è spazzatura in giro.
+
+Sei d’accordo?`,
+    b: `Ma sappiamo per certo che Bob è ordinato, giusto?
+In quel caso possiamo concludere che i fogli a terra non sono spazzatura.
+Dev’essere così, altrimenti la stanza non sarebbe ordinata e quindi nemmeno Bob. Cosa che non può essere.
+Quindi sappiamo già che sono lì per un motivo; chissà, potrebbero essere importanti.
+
+Che ne pensi?
+Li butteresti via comunque, anche se sappiamo che sono lì di proposito?`,
+    c: `Stai dicendo che Bob è ordinato quando la sua stanza non lo è? — Strano.
+Questo significa che i fogli sono lì per un motivo.`,
+    d: `Ricorda: siamo qui per migliorare la stanza e stiamo per buttare via qualcosa che sappiamo essere lì per un motivo.
+
+Buttarli via sarebbe un vero miglioramento?`,
+    e: `I fogli sono spariti.\n1 punto`
+  },
+
+  2: {
+    start: `Pensi che Bob abbia lasciato la coperta non piegata per distrazione?`,
+    a: `Ma sappiamo che Bob è ordinato, giusto?
+Allora perché dovrebbe lasciare la coperta non piegata?
+Non ha senso…
+A meno che… non sia intenzionale!
+Ok: Bob l’ha lasciata così per un motivo.
+
+Dovremmo piegarla lo stesso?`,
+    b: `Allora perché la piegheresti?
+
+Dovremmo lasciarla com’è?`,
+    c: `Quindi… la pieghiamo senza motivo?
+
+La pieghiamo comunque?`,
+    done: `La coperta stropicciata viene sostituita con una piegata.\n1 punto`
+  },
+
+  3: {
+    start: `È strano che Bob abbia lasciato lì una tenda così vecchia e bucata, vero?
+
+Pensi che valga la pena pensarci?`,
+    a: `Va bene.
+Facciamo girare gli ingranaggi!
+
+Perché Bob dovrebbe farlo?
+Perché lasciare appesa una tenda così vecchia e bucata?
+
+Pensi che avesse un piano?
+Pensi che stia già per sostituirla lui stesso con una nuova?
+Pensi che la tenda abbia un valore sentimentale per lui?
+
+Dovremmo sostituirla nonostante questi dubbi?`,
+    b: `D’accordo.
+Perché perdere tempo con queste sciocchezze?
+Siamo noi l’autorità, dopotutto.
+
+Dovremmo sostituire quella barzelletta di tenda con una nuova e alla moda?
+Bob ce ne sarà grato, giusto?`,
+    done: `La vecchia tenda bucata viene sostituita con una nuova.\n1 punto`
+  },
+
+  4: {
+    start: `Perché dovrebbe lasciare la tenda aperta in un giorno così?
+Il sole picchia forte, giusto?
+È abbastanza ovvio che dobbiamo chiuderla, no?
+
+Chiudiamo la tenda?`,
+    a: `Cosa intendi con “no”?
+Perché no?
+
+C’è qualcosa che dovremmo considerare?`,
+    b: `Tipo cosa?
+Che motivo potrebbe avere Bob per pensare che oggi la tenda debba restare aperta?
+
+Facciamo un passo indietro e raccogliamo ciò che sappiamo prima di forzare la cosa.
+
+Sappiamo che Bob è ordinato, giusto?
+Questo potrebbe essere un indizio che l’abbia lasciata aperta per un motivo, no?
+
+Rischiamo e chiudiamo la tenda anche se non sappiamo perché è aperta?`,
+    c: `Allora… chiudiamola e basta!`,
+    done: `La tenda è chiusa.\n1 punto`
+  },
+
+  5: {
+    start: `Strano.
+La finestra è chiusa.
+Perché lasciarla chiusa in una giornata così bella?
+
+La apriamo?
+Mi sembra un miglioramento [[H]]per me[[/H]].`,
+    done: `Evidenzia il testo: "per me" per 2 secondi.\nLa finestra si apre.\n1 punto`
+  },
+
+  6: {
+    start: `Questa stanza mi sembra piuttosto vuota [[H]]per me[[/H]].
+
+Perché non aggiungiamo un altro tavolo?
+Sono sicuro che Bob lo apprezzerebbe.
+
+Aggiungiamo un nuovo tavolo alla stanza?`,
+    done: `Evidenzia il testo: "per me" per 2 secondi.\nSi aggiunge un altro tavolo alla stanza.\n1 punto`
+  },
+
+  7: {
+    start: `I fiori?
+Sì: mancano davvero sotto la finestra.
+
+Bob dovrebbe saperlo, no?`,
+    a: `Sì, avrebbe davvero dovuto sapere cosa va sotto la finestra!`,
+    b: `No?
+Allora che facciamo?
+
+Aggiungiamo i fiori comunque?`,
+    done: `Si aggiunge un vaso di fiori sotto la finestra.\n1 punto`
+  },
+
+  8: {
+    start: `Guarda quel materasso!
+È troppo morbido perché una persona decente ci dorma sopra, no?
+
+Lo sostituiamo con uno migliore, più adatto alla schiena?`,
+    done: `Il materasso viene sostituito.\n1 punto`
+  },
+
+  9: {
+    start: `Quel letto lì…
+Sì, proprio quello.
+Sicuramente è fuori posto dove si trova ora.
+Spostarlo nell’angolo è molto più comodo.
+
+Spostiamo il letto nell’angolo?`,
+    done: `Il letto viene spostato nell’angolo.\n1 punto`
+  },
+
+  10: {
+    start: `Guarda quel letto…
+Sta guardando nella direzione sbagliata.
+
+Lo ruotiamo?`,
+    done: `Il letto viene ruotato.\n1 punto`
+  },
+
+  11: {
+    start: `Quel cuscino…
+È chiaramente dal lato sbagliato, no?
+
+Lo giriamo?`,
+    done: `Il cuscino viene girato.\n1 punto`
+  },
+
+  12: {
+    start: `Quella biancheria…
+Sembra sporca.
+
+La laviamo?`,
+    done: `La biancheria viene lavata.\n1 punto`
+  },
+
+  13: {
+  start: `Quindi… non vuoi migliorare nulla?
+
+Vuoi arrenderti?`,
+
+  a: `Cosa?
+Ma guarda la sua stanza: è un disastro!
+Ha chiaramente bisogno del nostro aiuto!
+
+Proviamo un paio di cose prima di arrenderci, va bene?`,
+
+  b: `Ti arrendi davvero?
+
+Sei sicuro?`
+  },
+
+  14: {
+    start: `Quello zaino…
+È sul pavimento.
+
+Lo mettiamo sul tavolo?`,
+    done: `Lo zaino viene messo sul tavolo.\n1 punto`
+  },
+
+  15: {
+    start: `Il pavimento…
+Potrebbe essere spazzato.
+
+Spazziamo il pavimento?`,
+    done: `Il pavimento viene spazzato.\n1 punto`
+  },
+
+  16: {
+    start: `Hai finito con i tuoi miglioramenti?
+
+Vuoi vedere la valutazione?`
+  }
+  },
+  hu: {
+    1: { // Clean papers
+      start: `Szerinted a földön heverő gyűrött papírok szemétnek számítanak?
+Szerinted Bob is ugyanígy gondolja?
+
+Haladjunk tovább, és takarítsuk fel?`,
+      a: `Ha a földön lévő papírok tényleg szemét lennének, az azt jelentené, hogy Bob szobája nincs rendben, mert szemét van a földön.
+Röviden: Bob nem lenne rendezett, ha szemét heverne a szobájában.
+
+Egyetértesz?`,
+      b: `De tudjuk biztosan, hogy Bob rendezett, igaz?
+Ebben az esetben arra következtethetünk, hogy a földön lévő papírok valójában nem szemét.
+Muszáj így lennie, mert különben a szoba nem lenne rendezett, és így Bob sem. Ami nem lehet.
+Tehát már tudjuk, hogy oka van annak, hogy ott vannak — ki tudja, akár fontosak is lehetnek.
+
+Mit gondolsz? Mégis kidobnád, annak ellenére, hogy tudjuk: szándékosan vannak ott?`,
+      d: `Tartsd észben: azért vagyunk itt, hogy javítsunk a szobán, és épp kidobnánk valamit, amiről tudjuk, hogy ott kell lennie.
+
+Vajon ez tényleg javítás lenne?`,
+      e: `A papírok eltűntek.\n1 pont`,
+      c: `Azt mondod, hogy Bob rendezett akkor is, ha a szobája nem az? – Furcsa.
+Ez azt jelenti, hogy a papírok ott vannak valamiért.`
+    },
+
+    2: { // Fold blanket
+      start: `Szerinted Bob figyelmetlenségből hagyta széthajtva a takarót?`,
+      a: `De tudjuk, hogy Bob rendezett, igaz?
+Miért hagyná akkor széthajtva a takarót?
+Ennek így semmi értelme…
+Hacsak… nem szándékos!
+Rendben — akkor Bob okkal hagyta így.
+
+Hajtsuk össze mégis?`,
+      b: `Akkor miért hajtanád össze?
+
+Hagyjuk úgy, ahogy van?`,
+      c: `Szóval… ok nélkül hajtjuk össze?
+
+Hajtsuk össze mégis?`,
+      done: `A gyűrött takarót egy összehajtott váltja fel.\n1 pont`
+    },
+
+    3: { // Replace curtain
+      start: `Fura, hogy Bob egy ilyen régi, lyukas függönyt hagyott ott lógni, nem?
+
+Szerinted érdemes ezen elgondolkodni?`,
+      a: `Rendben.
+Indítsuk be a fogaskerekeket!
+
+Miért tenné ezt Bob?
+Miért hagyna egy ilyen régi, lyukas függönyt ott lógni?
+
+Szerinted volt vele valami terve?
+Szerinted már épp cseréli, csak még nem jutott a végére?
+Szerinted valami érzelmi értéke van számára?
+
+Folytassuk a cserét az újonnan szerzett kételyeink ellenére is?`,
+      b: `Egyetértek.
+Miért pazarolnánk az időt ilyen hülyeségekre?
+Hiszen mi vagyunk itt a tekintély.
+
+Folytassuk, és cseréljük le azt a régi, nevetséges függönyt egy új, stílusosra?
+Bob biztosan hálás lesz érte, igaz?`,
+      done: `A régi, lyukas függönyt egy új váltja fel.\n1 pont`
+    },
+
+    4: { // Close curtain
+      start: `Miért hagyná nyitva a függönyt egy ilyen napon?
+A nap tűzforrón süt, igaz?
+Elég egyértelmű, hogy be kell húznunk a függönyt, nem?
+
+Behúzzuk a függönyt?`,
+      a: `Hogy érted, hogy nem?
+Miért ne?
+
+Van valami, amit mérlegelnünk kellene?`,
+      b: `Mint például mi?
+Milyen oka lehetne Bobnak arra, hogy ma nyitva kell hagyni a függönyt?!?
+
+Üljünk le egy pillanatra, és vegyük sorra, amit tudunk, mielőtt erőltetjük a dolgot.
+
+Annyit tudunk, hogy Bob rendezett, igaz?
+Ez arra utalhat, hogy talán oka van rá, hogy nyitva hagyta a függönyt, igaz?
+
+Vállaljuk a kockázatot, és behúzzuk, annak ellenére, hogy nem tudjuk, miért van nyitva?`,
+      c: `Akkor húzzuk be már végre a függönyt!`,
+      done: `A függöny be van húzva.\n1 pont`
+    },
+
+    5: { // Open window
+      start: `Fura.
+Az ablak csukva van.
+Miért hagyná csukva az ablakot egy ilyen szép napon?
+
+Nyissuk ki egyszerűen?
+Ez [[H]]nekem[[/H]] javításnak hangzik.`,
+      done: `Kiemeli a „nekem” szót 2 másodpercre.\nAz ablak kinyílik.\n1 pont`
+    },
+
+    6: { // Add another table
+      start: `Ez a szoba elég üresnek tűnik [[H]]nekem[[/H]].
+
+Miért ne tennénk be még egy asztalt?
+Biztos vagyok benne, hogy Bob értékelné.
+
+Tegyünk be egy új asztalt a szobába?`,
+      done: `Kiemeli a „nekem” szót 2 másodpercre.\nKerül még egy asztal a szobába.\n1 pont`
+    },
+
+    7: { // Add flowers
+      start: `A virágok?
+Igen — tényleg hiányoznak az ablak alól!
+
+Bobnak ezt jobban kellene tudnia, igaz?`,
+      a: `Igen, tényleg tudnia kellett volna, mi való az ablak alá!`,
+      b: `Nem?
+Akkor mit csináljunk?
+
+Tegyük oda a virágokat így is?`,
+      done: `Egy váza virág került az ablak alá.\n1 pont`
+    },
+
+    8: { // Mattress
+      start: `Nézd azt a matracot!
+Túl puha ahhoz, hogy egy rendes ember azon feküdjön, igaz?
+
+Cseréljük le egy jobb, gerincbarát matracra?`,
+      done: `A matrac ki lett cserélve.\n1 pont`
+    },
+
+    9: { // Bed to corner
+      start: `Az az ágy ott.
+Igen, az.
+Biztosan nincs jó helyen ott, ahol most van.
+A sarokba tolva sokkal kényelmesebb, mert kevésbé éri a huzat, és ott kellemesebb aludni.
+
+Tegyük át az ágyát a sarokba?`,
+      done: `Az ágy a sarokba került.\n1 pont`
+    },
+
+    10: { // Rotate bed
+      start: `Az ágya.
+Látszik, hogy rossz irányba néz.
+Biztos vagyok benne, hogy nem úgy akarta, hogy arra nézzen.
+
+Forgassuk el az ágyát a helyes irányba?`,
+      done: `Az ágy elforgatva.\n1 pont`
+    },
+
+    11: { // Flip pillow
+      start: `Elsőre apró javításnak tűnhet, de valójában a párna időnkénti megfordítása
+javítja az alvásminőséget, mert a koszos oldal kerül alulra.
+Egészen biztos, hogy ezt nem tudja.
+Miért is tudná?
+Ne vesztegessük az időt, segítsünk neki.
+
+Megfordítsuk a párnáját?`,
+      done: `A párna meg lett fordítva.\n1 pont`
+    },
+
+    12: { // Wash bedding
+      start: `Innen úgy tűnik, hogy az ágyneműjét mostanában nem mosta ki.
+Nincs vesztegetni való idő, bármelyik pillanatban visszajöhet.
+Annyi javítást kell megcsinálnunk, amennyit csak lehet, mielőtt ez megtörténik!
+Siessünk, és szedjük le a huzatot.
+
+Kimossuk neki az ágyneműt?`,
+      done: `Az ágynemű le lett szedve.\n1 pont`
+    },
+
+    13: { // Give up
+      start: `Miért adod fel ilyen gyorsan?
+Rengeteg mindent tehetünk ahelyett, hogy csak feladnánk.
+Na, gyerünk!
+
+Folytassuk inkább a „javításokat”?`,
+      a: `Micsoda?
+De nézz körül, micsoda rendetlenség!
+Nyilván szüksége van a segítségünkre!
+
+Próbáljunk ki még pár dolgot, mielőtt feladnánk, jó?`,
+      b: `Jól van, jól van.
+Ha ragaszkodsz hozzá, nem tartalak vissza.
+De… még egyszer megkérdezem, csak hogy biztos legyek benne.
+
+Biztos, hogy itt és most feladod?`
+    },
+
+    14: { // Backpack on table
+      start: `Úgy tűnik, elfelejtette a hátizsákját az asztalra tenni.
+Tudom, hogy sokan inkább az asztalon tartják a táskájukat, mint mellette.
+Lehet, hogy nem is olyan rendezett, mint amilyennek állítja magát?
+
+Tegyük a hátizsákot az asztalra?`,
+      done: `A hátizsák az asztalra került.\n1 pont`
+    },
+
+    15: { // Sweep floor
+      start: `Egy kis söprögetés itt-ott nem árthat senkinek, igaz?
+Csináljuk!
+Söpörjük fel a padlót!
+
+Felsöpörjük a padlót?`,
+      done: `A padló fel lett söpörve.\n1 pont`
+    },
+
+    16: { // I'm done
+      start: `Biztos, hogy végeztél a javításokkal?
+Még tehetnénk érte többet, nem?
+
+Biztos vagy benne?`
+    }
+  }
+};
+
+function dialogNodeText(optionId, nodeId, fallbackText){
+  return DIALOG_TEXT[state.lang]?.[optionId]?.[nodeId] ?? fallbackText ?? "";
+}
+
+function choiceLabel(label){
+  if (label === "Yes") return t("ui.yes");
+  if (label === "No") return t("ui.no");
+  return label;
+}
+
+function hasHighlightText(txt){
+  return typeof txt === "string" && txt.includes("[[H]]");
+}
+
+function isPointAwardText(text){
+  return typeof text === "string" && /\b1\s+(point|pont|punto|puntos|punti)\b/i.test(text);
+}
+
 function goToNode(nodeId){
   if (!currentDialog) return;
   const node = currentDialog.nodes[nodeId];
   if (!node) return;
 
   currentDialog.nodeId = nodeId;
-  dialogText.innerHTML = safeHtmlFromTokenText(node.text);
+  const rawText = dialogNodeText(currentDialog.optionId, nodeId, node.text);
+  dialogText.innerHTML = safeHtmlFromTokenText(rawText);
 
   actions.innerHTML = "";
   if (node.choices && node.choices.length){
@@ -1175,7 +2052,7 @@ function goToNode(nodeId){
       const b = document.createElement("button");
       b.type = "button";
       b.className = "btn" + (ch.primary ? " primary" : "") + (ch.danger ? " danger" : "");
-      b.textContent = ch.label;
+      b.textContent = choiceLabel(ch.label);
       b.addEventListener("click", async () => {
         if (ch.onPick) await ch.onPick();
         if (ch.next === "close") return closeDialog();
@@ -1184,7 +2061,8 @@ function goToNode(nodeId){
         // If the next node is a "1 point" success node, don't show it
         // unless it contains highlight text; then show it with an OK button.
         const nextNode = currentDialog?.nodes?.[ch.next];
-        if (isPointAwardNode(nextNode)) {
+        const nextText = dialogNodeText(currentDialog.optionId, ch.next, nextNode?.text ?? "");
+        if (isPointAwardText(nextText)) {
           if (nextNode.onEnter) nextNode.onEnter();
 
           // Only show something if there's highlighted content to show.
@@ -1195,7 +2073,7 @@ function goToNode(nodeId){
             const ok = document.createElement("button");
             ok.type = "button";
             ok.className = "btn primary";
-            ok.textContent = "OK";
+            ok.textContent = t("ui.ok");
             ok.addEventListener("click", () => closeDialog());
             actions.appendChild(ok);
             return;
@@ -1212,7 +2090,7 @@ function goToNode(nodeId){
   } else {
     // No choices: only keep the dialog open if there's highlighted text to show;
     // otherwise close immediately.
-    if (nodeHasHighlight(node)) {
+    if (hasHighlightText(rawText)) {
       actions.innerHTML = "";
       const ok = document.createElement("button");
       ok.type = "button";
@@ -1251,29 +2129,168 @@ function openDialogForOption(optionId){
 
   const dialog = dialogs[optionId];
   if (!dialog) return;
-  showDialog({title: `Option ${optionId}`, optionId, nodes: dialog});
+  showDialog({title: optionLabel(optionId), optionId, nodes: dialog});
 }
 
 /* ---------------------------
    Evaluation (text preserved from earlier build)
 ----------------------------*/
+const EVAL_TEXT = {
+  en: {
+    0: `Congratulations! \\(^.^)/
+You have recognized that Bob's room is already as improved as it can get and the only person who can actually improve it further is Bob himself and not us or anyone else!
+You might think we have lost, but no - we have recognized our position here and we did made the right call!
+
+---Bob is proud of you!---
+Restart?`,
+    1: `Congratulations!
+You have only made Bob's room slightly worse! (._.)
+You might ponder now... why is that?
+The only thing I actually did was wrong?
+Let's restart and figure this out!
+
+Bob would be slightly angry with you.
+---Bob will restore the room to it's original organized state.---
+Restart?`,
+    2: `Congratulations!
+You have made Bob's room moderately worse! (O_O')
+You might ponder now... why is that?
+Wasn't Bob happy with our choice of improvements?
+Did we improve the wrong things?
+Let's restart and figure this out!
+
+Bob would be real angry with you, and likely not leave you unsupervised in the room next time.
+---Bob might be able to restore the room to it's original organized state.---
+Restart?`,
+    3: `Congratulations!
+You have made Bob's room significantly worse! (x_x)
+You likely not understand why is that.
+Perhaps try improving fewer things at a time?
+Let's restart and figure this out!
+
+---Bob would be real angry with you, and would not invite you to his room ever again.---
+Restart?`
+  },
+
+  es: {
+  0: `¡Felicidades! \\(^.^)/
+Has reconocido que la habitación de Bob ya está tan mejorada como puede estar, y que la única persona que realmente puede mejorarla más es el propio Bob, no nosotros ni nadie más.
+Puede que pienses que hemos perdido, pero no: hemos entendido nuestra posición e hicimos la elección correcta.
+
+---¡Bob está orgulloso de ti!---
+¿Reiniciar?`,
+  1: `¡Felicidades!
+Solo has hecho que la habitación de Bob esté un poco peor. (._.)
+Quizá te preguntes… ¿por qué?
+¿Lo único que hice estuvo mal?
+Reiniciemos y averigüémoslo.
+
+Bob estaría un poco enfadado contigo.
+---Bob restaurará la habitación a su estado ordenado original.---
+¿Reiniciar?`,
+  2: `¡Felicidades!
+Has hecho que la habitación de Bob esté moderadamente peor. (O_O')
+Quizá te preguntes… ¿por qué?
+¿No estaba Bob contento con nuestras mejoras?
+¿Mejoramos las cosas equivocadas?
+Reiniciemos y averigüémoslo.
+
+Bob estaría muy enfadado contigo, y probablemente no te dejaría solo en la habitación la próxima vez.
+---Tal vez Bob pueda restaurar la habitación a su estado ordenado original.---
+¿Reiniciar?`,
+  3: `¡Felicidades!
+Has hecho que la habitación de Bob esté significativamente peor. (x_x)
+Probablemente no entiendas por qué.
+Quizá intenta mejorar menos cosas a la vez.
+Reiniciemos y averigüémoslo.
+
+---Bob estaría muy enfadado contigo y probablemente no te invitaría a su habitación nunca más.---
+¿Reiniciar?`
+},
+
+  it: {
+  0: `Congratulazioni! \\(^.^)/
+Hai riconosciuto che la stanza di Bob è già migliorata quanto può esserlo, e che l’unica persona che può davvero migliorarla ulteriormente è Bob stesso, non noi né chiunque altro.
+Potresti pensare che abbiamo perso, ma no: abbiamo capito la nostra posizione e abbiamo fatto la scelta giusta!
+
+---Bob è orgoglioso di te!---
+Ricominciare?`,
+  1: `Congratulazioni!
+Hai reso la stanza di Bob solo leggermente peggiore. (._.)
+Forse ti stai chiedendo… perché?
+L’unica cosa che ho fatto era sbagliata?
+Ricominciamo e scopriamolo.
+
+Bob sarebbe un po’ arrabbiato con te.
+---Bob ripristinerà la stanza al suo stato ordinato originale.---
+Ricominciare?`,
+  2: `Congratulazioni!
+Hai reso la stanza di Bob moderatamente peggiore. (O_O')
+Forse ti stai chiedendo… perché?
+Bob non era contento delle nostre migliorie?
+Abbiamo migliorato le cose sbagliate?
+Ricominciamo e scopriamolo.
+
+Bob sarebbe davvero arrabbiato con te e probabilmente non ti lascerebbe incustodito nella stanza la prossima volta.
+---Forse Bob riuscirà a ripristinare la stanza al suo stato ordinato originale.---
+Ricominciare?`,
+  3: `Congratulazioni!
+Hai reso la stanza di Bob significativamente peggiore. (x_x)
+Probabilmente non capisci perché.
+Forse prova a migliorare meno cose alla volta.
+Ricominciamo e scopriamolo.
+
+---Bob sarebbe molto arrabbiato con te e probabilmente non ti inviterebbe mai più nella sua stanza.---
+Ricominciare?`
+},
+
+  hu: {
+    0: `Gratulálok! \\(^.^)/
+Felismerted, hogy Bob szobáján már nem igazán lehet javítani, és az egyetlen ember, aki tényleg tovább tudná javítani, Bob maga — nem mi, és nem bárki más!
+Azt hihetnéd, hogy vesztettünk, de nem: felismertük a helyzetünket, és jól döntöttünk!
+
+---Bob büszke rád!---
+Újrakezdés?`,
+    1: `Gratulálok!
+Csak egy kicsit rontottál Bob szobáján! (._.)
+Most talán azon gondolkodsz... miért?
+Csak az az egy dolog volt rossz, amit csináltam?
+Kezdjük újra, és derítsük ki!
+
+Bob egy kicsit mérges lenne rád.
+---Bob visszaállítja a szobát az eredeti, rendezett állapotába.---
+Újrakezdés?`,
+    2: `Gratulálok!
+Közepesen rontottál Bob szobáján! (O_O')
+Most talán azon gondolkodsz... miért?
+Nem volt Bob elégedett a javításainkkal?
+Rossz dolgokat javítottunk?
+Kezdjük újra, és derítsük ki!
+
+Bob nagyon mérges lenne rád, és valószínűleg legközelebb nem hagyna felügyelet nélkül a szobában.
+---Bob talán vissza tudja állítani a szobát az eredeti, rendezett állapotába.---
+Újrakezdés?`,
+    3: `Gratulálok!
+Jelentősen rontottál Bob szobáján! (x_x)
+Valószínűleg nem érted, miért.
+Talán próbálj meg egyszerre kevesebb dolgot javítani.
+Kezdjük újra, és derítsük ki!
+
+---Bob nagyon mérges lenne rád, és valószínűleg többé nem hívna be a szobájába.---
+Újrakezdés?`
+  }
+};
+
 function evaluationTextForScore(score){
-  if (score === 0){
-    return `Congratulations! \\(^.^)/\nYou have recognized that Bob's room is already as improved as it can get and the only person who can actually improve it further is Bob himself and not us or anyone else!\nYou might think we have lost, but no - we have recognized our position here and we did made the right call!\n\n---Bob is proud of you!---\nRestart?`;
-  }
-  if (score === 1){
-    return `Congratulations!\nYou have only made Bob's room slightly worse! (._.)\nYou might ponder now... why is that?\nThe only thing I actually did was wrong?\nLet's restart and figure this out!\n\nBob would be slightly angry with you.\n---Bob will restore the room to it's original organized state.---\nRestart?`;
-  }
-  if (score === 2){
-    return `Congratulations!\nYou have made Bob's room moderately worse! (O_O')\nYou might ponder now... why is that?\nWasn't Bob happy with our choice of improvements?\nDid we improve the wrong things?\nLet's restart and figure this out!\n\nBob would be real angry with you, and likely not leave you unsupervised in the room next time.\n---Bob might be able to restore the room to it's original organized state.---\nRestart?`;
-  }
-  return `Congratulations!\nYou have made Bob's room significantly worse! (x_x)\nYou likely not understand why is that.\nPerhaps try improving fewer things at a time?\nLet's restart and figure this out!\n\n---Bob would be real angry with you, and would not invite you to his room ever again.---\nRestart?`;
+  const pack = EVAL_TEXT[state.lang] || EVAL_TEXT.en;
+  const key = (score >= 3) ? 3 : score;
+  return pack[key] || EVAL_TEXT.en[key];
 }
 
 function showEvaluation(){
   const txt = evaluationTextForScore(state.score);
   currentDialog = {
-    title:"Evaluation",
+    title: t("ui.evaluationTitle"),
     optionId: 0,
     nodes:{
       start:{
@@ -1283,7 +2300,7 @@ function showEvaluation(){
         ]
       },
       restart:{
-        text:"Restart?",
+        text: t("ui.restartQ"),
         onEnter: () => restartGame(),
         autoCloseMs: 10
       }
@@ -1737,10 +2754,10 @@ Shall we continue with the improvements instead?`,
     a:{
       text:
 `What?
-But look at his room it's a mess!
+But look at his room, it's a mess!
 He clearly needs our help!
 
-Let's try a couple things before we just give up, okay?`,
+Let's try a couple of things before we just give up, okay?`,
       choices:[
         {label:"Yes", primary:true, next:"close"},
         {label:"No", next:"b", danger:true}
@@ -1880,7 +2897,7 @@ function pluck(freq, t){
 function startMusic(){
   if (state.musicOn) return;
   state.musicOn = true;
-  el("musicBtn").textContent = "On";
+  setMusicButtonText();
   el("musicBtn").setAttribute("aria-pressed","true");
 
   ensureAudio();
@@ -1976,7 +2993,7 @@ function startMusic(){
 function stopMusic(){
   if (!state.musicOn) return;
   state.musicOn = false;
-  el("musicBtn").textContent = "Off";
+  setMusicButtonText();
   el("musicBtn").setAttribute("aria-pressed","false");
   if (musicTimer){
     clearInterval(musicTimer);
@@ -2024,6 +3041,13 @@ aboutOverlay.addEventListener("click", (e) => {
 renderOptions();
 setCounter();
 updateScene();
+
+const langSel = el("langSel");
+langSel.value = state.lang;
+langSel.addEventListener("change", () => applyLanguage(langSel.value));
+
+// initial i18n
+applyLanguage(state.lang);
 </script>
 </body>
 </html>
