@@ -991,6 +991,7 @@ const I18N = {
       no: "No",
       evaluationTitle: "Evaluation",
       restartQ: "Restart?",
+      mind: "Mind"
     },
     options: {
       1:"Clean up the trash papers from the floor.",
@@ -1029,7 +1030,8 @@ const I18N = {
       restartQ: "¿Reiniciar?",
       yes: "Sí",
       no: "No",
-      ok: "OK"
+      ok: "OK",
+      mind: "Mente"
     },
     options: {
       1: "Recoger los papeles arrugados del suelo.",
@@ -1068,7 +1070,8 @@ const I18N = {
       restartQ: "Ricominciare?",
       yes: "Sì",
       no: "No",
-      ok: "OK"
+      ok: "OK",
+      mind: "Mente"
     },
     options: {
       1: "Raccogliere i fogli stropicciati dal pavimento.",
@@ -1111,6 +1114,7 @@ const I18N = {
       no: "Nem",
       evaluationTitle: "Értékelés",
       restartQ: "Újrakezdés?",
+      mind: "Elme",
     },
     options: {
       1:"Szedjük fel a gyűrött papírokat a földről.",
@@ -1164,6 +1168,8 @@ function setMusicButtonText(){
 function applyLanguage(lang){
   state.lang = lang;
   localStorage.setItem("lang", lang);
+
+  el("modalTitle").textContent = t("ui.mind");
 
   // top bar
   el("musicLabel").textContent = t("ui.music");
