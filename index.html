@@ -906,7 +906,7 @@
     </div>
   </div>
 
-  <!-- Credits popup -->
+  <!-- About popup -->
   <div class="overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
     <div class="modal">
       <div class="modalTop">
@@ -916,7 +916,7 @@
 
       <div class="modalBody">
         <div class="aboutText">
-          <p><strong><span id="aboutCreatorsLabel">Creators</span>:</strong> Swintleton</p>
+          <p><strong><span id="aboutCreatorsLabel">Creator</span>:</strong> Swintleton</p>
           <p><strong><span id="aboutGithubLabel">GitHub</span>:</strong>
             <a href="https://github.com/Swintleton/Bobs-room" target="_blank" rel="noopener noreferrer">
               github.com/Swintleton/Bobs-room
@@ -925,7 +925,17 @@
           <p><strong><span id="aboutEmailLabel">Email</span>:</strong>
             <a href="mailto:keragon2@gmail.com">keragon2@gmail.com</a>
           </p>
-          <p><strong><span id="aboutVersionLabel">Version</span>:</strong> 1.0.1</p>
+          <p><strong><span id="aboutVersionLabel">Version</span>:</strong> 1.0.2</p>
+          <p>
+          <strong><span id="aboutDescriptionLabel">Description</span>:</strong>
+          <span id="aboutDescriptionText">
+            This is an educational, thought-provoking one-page game created by Swintleton.
+            The site is fully static and does not collect personal data, use cookies,
+            analytics, or third-party scripts, and it does not require any downloads.
+            The full source code is available on GitHub and may be downloaded there.
+          </span>
+        </p>
+        <p><em id="aboutDescriptionEmText">Everything this page does can be inspected directly in the source code.</em></p>
         </div>
       </div>
 
@@ -991,7 +1001,16 @@ const I18N = {
       no: "No",
       evaluationTitle: "Evaluation",
       restartQ: "Restart?",
-      mind: "Mind"
+      mind: "Mind",
+      aboutDescriptionLabel: "Description",
+      aboutDescriptionText:
+        "This is an educational, thought-provoking one-page game created by Swintleton. " +
+        "The site is fully static and does not collect personal data, use cookies, analytics, " +
+        "or third-party scripts, and it does not require any downloads. " +
+        "The full source code is available on GitHub and may be downloaded there.",
+      aboutDescriptionEmText:
+        "Everything this page does can be inspected directly in the source code.",
+      aboutCreatorLabel: "Creator",
     },
     options: {
       1:"Clean up the trash papers from the floor.",
@@ -1031,7 +1050,16 @@ const I18N = {
       yes: "Sí",
       no: "No",
       ok: "OK",
-      mind: "Mente"
+      mind: "Mente",
+      aboutDescriptionLabel: "Descripción",
+      aboutDescriptionText:
+        "Este es un juego educativo y reflexivo de una sola página creado por Swintleton. " +
+        "El sitio es completamente estático y no recopila datos personales, no usa cookies, " +
+        "analítica ni scripts de terceros, y no requiere descargas. " +
+        "El código fuente completo está disponible en GitHub y puede descargarse allí.",
+      aboutDescriptionEmText:
+        "Todo lo que hace esta página se puede inspeccionar directamente en el código fuente.",
+      aboutCreatorLabel: "Creador",
     },
     options: {
       1: "Recoger los papeles arrugados del suelo.",
@@ -1071,7 +1099,16 @@ const I18N = {
       yes: "Sì",
       no: "No",
       ok: "OK",
-      mind: "Mente"
+      mind: "Mente",
+      aboutDescriptionLabel: "Descrizione",
+      aboutDescriptionText:
+        "Questo è un gioco educativo e stimolante di una sola pagina creato da Swintleton. " +
+        "Il sito è completamente statico e non raccoglie dati personali, non usa cookie, " +
+        "analisi o script di terze parti, e non richiede alcun download. " +
+        "Il codice sorgente completo è disponibile su GitHub e può essere scaricato da lì.",
+      aboutDescriptionEmText:
+        "Tutto ciò che fa questa pagina può essere ispezionato direttamente nel codice sorgente.",
+      aboutCreatorLabel: "Creatore",
     },
     options: {
       1: "Raccogliere i fogli stropicciati dal pavimento.",
@@ -1115,6 +1152,15 @@ const I18N = {
       evaluationTitle: "Értékelés",
       restartQ: "Újrakezdés?",
       mind: "Elme",
+      aboutDescriptionLabel: "Leírás",
+      aboutDescriptionText:
+        "Ez egy oktató jellegű, elgondolkodtató, egylapos játék, amelyet Swintleton készített. " +
+        "Az oldal teljesen statikus, nem gyűjt személyes adatokat, nem használ sütiket, " +
+        "analitikát vagy külső szkripteket, és nem igényel letöltést. " +
+        "A teljes forráskód elérhető a GitHubon, és onnan letölthető.",
+      aboutDescriptionEmText:
+        "Az oldal minden működése közvetlenül megtekinthető a forráskódban.",
+      aboutCreatorLabel: "Készítő",
     },
     options: {
       1:"Szedjük fel a gyűrött papírokat a földről.",
@@ -1186,6 +1232,10 @@ function applyLanguage(lang){
   el("aboutEmailLabel").textContent    = t("ui.email");
   el("aboutVersionLabel").textContent  = t("ui.version");
   el("aboutOk").textContent            = t("ui.ok");
+  el("aboutCreatorsLabel").textContent = t("ui.aboutCreatorLabel");
+  el("aboutDescriptionLabel").textContent = t("ui.aboutDescriptionLabel");
+  el("aboutDescriptionText").textContent = t("ui.aboutDescriptionText");
+  el("aboutDescriptionEmText").textContent = t("ui.aboutDescriptionEmText");
 
   // dynamic UI
   setMusicButtonText();
